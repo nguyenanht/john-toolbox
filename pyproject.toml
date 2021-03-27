@@ -1,8 +1,17 @@
 [tool.poetry]
 name = "john_toolbox"
-version = "0.1.0"
-description = "nlp package"
-authors = ["john"]
+version = "0.3.1"
+description = "Wrapper for transformers scikit learn pipeline and wrapper for ml model"
+authors = ["john <contact@nguyenjohnathan.com>"]
+# New attributes
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/nguyenanht/john-toolbox"
+repository = "https://github.com/nguyenanht/john-toolbox"
+keywords = ["sklearn", "pipeline", "pytorch"]
+include = [
+    "LICENSE",
+]
 
 [tool.poetry.dependencies]
 python = "^3.7.9"
@@ -21,7 +30,10 @@ torchvision = "^0.8.1"
 beautifulsoup4 = "^4.9"
 autopep8 = "^1.5"
 xgboost = "^1.3"
+importlib-metadata = "^3.8.0"
 
+[tool.poetry.dev-dependencies]
+pytest = "^3.0"
 
 [build-system]
 requires = ["poetry>=0.12"]
