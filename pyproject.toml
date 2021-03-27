@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "john-toolbox"
-version = "1.0.0"
+name = "john_toolbox"
+version = "0.1.0"
 description = "nlp package"
 authors = ["john"]
 
