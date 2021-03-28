@@ -21,10 +21,12 @@ class PandasPipeline:
 
     def fit_transform(self, df: pd.DataFrame) -> pd.DataFrame:
         self.columns = df.columns
-        self._some_target_modality = df[self.target_name].iat[0]  # in case we do not have the target for the prediction
+        self._some_target_modality = df[self.target_name].iat[
+            0
+        ]  # in case we do not have the target for the prediction
         return self.feature_processing.fit_transform(df)
 
-    def transform(self, df) -> pd.DataFrame:
+    def transform(self, df: pd.DataFrame) -> pd.DataFrame:
         df = df.copy()
         if self.target_name not in df.columns:
             df[self.target_name] = [self._some_target_modality] * len(df)
