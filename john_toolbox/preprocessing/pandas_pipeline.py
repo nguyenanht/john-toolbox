@@ -3,6 +3,10 @@ from typing import List
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
+from john_toolbox.utils.logger_config import get_logger
+
+logger = get_logger(logger_name=__name__)
+
 
 class PandasPipeline:
     def __init__(self, steps: List, target_name: str, verbose: bool = True):
