@@ -98,7 +98,7 @@ class EncoderTransformer(BaseEstimator, TransformerMixin):
 
         try:
             new_cols = self.encoder.get_feature_names()  # one hot encoding
-        except Exception as e:
+        except AttributeError:
             new_cols = (
                 [f"{self.new_cols_prefix}_{idx}" for idx in range(new_cols_size)]
                 if new_cols_size > 1
