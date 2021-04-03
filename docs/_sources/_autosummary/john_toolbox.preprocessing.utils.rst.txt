@@ -1,0 +1,31 @@
+john\_toolbox.preprocessing.utils
+=================================
+
+.. automodule:: john_toolbox.preprocessing.utils
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :nosignatures:
+   
+      compute_in_parallel
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
