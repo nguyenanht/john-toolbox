@@ -30,6 +30,7 @@ author = "johnathan nguyen"
 extensions = [
     "sphinx.ext.mathjax",
     "sphinx.ext.autodoc",
+    "sphinx.ext.githubpages",  # generate automatically .nojekyll file for github page
     "sphinx.ext.autosummary",  # Create neat summary tables
     "sphinx.ext.doctest",
     "sphinx.ext.inheritance_diagram",
