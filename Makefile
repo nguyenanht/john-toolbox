@@ -90,3 +90,8 @@ docs: build ## Build and generate docs
 	$(DOCKER_RUN) 'poetry run sphinx-build ./docs-scripts/source ./docs -b html'
 	$(DOCKER_RUN) 'touch ./docs/.nojekyll'
 .PHONY: doc
+
+docs-prod: build install ## Build and generate docs in production
+	$(DOCKER_RUN) 'poetry run sphinx-build ./docs-scripts/source ./docs -b html'
+	$(DOCKER_RUN) 'touch ./docs/.nojekyll'
+.PHONY: docprod
