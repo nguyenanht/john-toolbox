@@ -91,13 +91,7 @@ docs: build ## Build and generate docs
 	$(DOCKER_RUN) 'touch ./docs/.nojekyll'
 .PHONY: doc
 
-install-dev: build
-	docker run --rm     -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c 'poetry install --dev-only'
-	echo "Changing current folder rights"
-	sudo chmod -R 777 .cache
-.PHONY: install
-
-docs-prod: install-dev ## Build and generate docs in production
+docs-prod: install ## Build and generate docs in production
 	$(DOCKER_RUN) 'poetry run sphinx-build ./docs-scripts/source ./docs -b html'
 	$(DOCKER_RUN) 'touch ./docs/.nojekyll'
 .PHONY: docprod
