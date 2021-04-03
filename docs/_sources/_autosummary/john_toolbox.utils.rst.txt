@@ -1,0 +1,30 @@
+john\_toolbox.utils
+===================
+
+.. automodule:: john_toolbox.utils
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   john_toolbox.utils.logger_config
+

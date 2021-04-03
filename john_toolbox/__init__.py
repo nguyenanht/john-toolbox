@@ -1,3 +1,3 @@
-from importlib_metadata import version
-
-__version__ = version(__package__)
+"""
+API reference documentation for the example `john_toolbox` package.
+"""
