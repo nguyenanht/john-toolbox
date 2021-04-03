@@ -5,7 +5,7 @@ name: "Build and deploy Github pages"
 on:
   push:
     branches:
-      - master  # trigger only when we push on master
+      - main  # trigger only when we push on master
 
 jobs:
 
