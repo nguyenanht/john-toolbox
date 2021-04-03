@@ -38,7 +38,7 @@ jobs:
 
       - name: "Build Sphinx Doc"
         run: |
-          make docs
+          make docs-prod
 
       # 3. Deployment on Github pages
 
