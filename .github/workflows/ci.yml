@@ -1,5 +1,5 @@
 # Name of workflow
-name: "Build and deploy Github pages"
+name: "CI pytest"
 
 # Define trigger
 on: push
