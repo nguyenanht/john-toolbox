@@ -13,6 +13,11 @@ jobs:
     # define task
     steps:
       # 1. get content
+      - name: "Checkout"
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
       - name: "Run pytest"
         run: |
           make
