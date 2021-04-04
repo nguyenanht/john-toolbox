@@ -96,7 +96,6 @@ docs-prod: install ## Build and generate docs in production
 	$(DOCKER_RUN) 'touch ./docs/.nojekyll'
 .PHONY: docprod
 
-
 ci-pytest: install ## ci tests
 	$(DOCKER_RUN) 'make tests'
 

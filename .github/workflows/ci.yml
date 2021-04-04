@@ -20,5 +20,5 @@ jobs:
 
       - name: "Run pytest"
         run: |
-          make
+          make ci-pytest
 
