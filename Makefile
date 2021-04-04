@@ -95,3 +95,8 @@ docs-prod: install ## Build and generate docs in production
 	$(DOCKER_RUN) 'poetry run sphinx-build ./docs-scripts/source ./docs -b html'
 	$(DOCKER_RUN) 'touch ./docs/.nojekyll'
 .PHONY: docprod
+
+
+ci: install
+	$(DOCKER_RUN) 'make tests'
+
