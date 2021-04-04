@@ -15,5 +15,5 @@ jobs:
       # 1. get content
       - name: "Run pytest"
         run: |
-          make ci
+          make ci-pytest
 

@@ -97,6 +97,6 @@ docs-prod: install ## Build and generate docs in production
 .PHONY: docprod
 
 
-ci: install
+ci-pytest: install ## ci tests
 	$(DOCKER_RUN) 'make tests'
 
