@@ -1,4 +1,8 @@
 
+## [0.3.4](https://github.com/nguyenanht/john-toolbox/compare/v0.3.3...v0.3.4) (2021-04-06)
+
+
+
 ## [0.3.3](https://github.com/nguyenanht/john-toolbox/compare/v0.1.0...v0.3.3) (2021-04-06)
 
 
