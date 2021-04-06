@@ -1,0 +1,24 @@
+# Name of workflow
+name: "CI pytest"
+
+# Define trigger
+on: push
+
+jobs:
+
+  # Job
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    # define task
+    steps:
+      # 1. get content
+      - name: "Checkout"
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      # 2. run pytest
+      - name: "Run pytest"
+        run: |
+          make ci-pytest
+

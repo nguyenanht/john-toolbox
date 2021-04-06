@@ -8,6 +8,7 @@ PORT=8884
 default: help;   # default target
 
 IMAGE_NAME=john-toolbox:latest
+IMAGE_RELEASER_NAME=release-changelog:latest
 DOCKER_NAME = johntoolbox
 DOCKER_NAME_GPU = johntoolboxgpu
 DOCKER_RUN = docker run  --rm  -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c
@@ -90,3 +91,25 @@ docs: build ## Build and generate docs
 	$(DOCKER_RUN) 'poetry run sphinx-build ./docs-scripts/source ./docs -b html'
 	$(DOCKER_RUN) 'touch ./docs/.nojekyll'
 .PHONY: doc
+
+docs-prod: install ## Build and generate docs in production
+	$(DOCKER_RUN) 'poetry run sphinx-build ./docs-scripts/source ./docs -b html'
+	$(DOCKER_RUN) 'touch ./docs/.nojekyll'
+.PHONY: docprod
+
+ci-pytest: install ## ci tests
+	$(DOCKER_RUN) 'make tests'
+
+
+prepare-release: build build-releaser ## Prepare release branch with changelog for given version
+	./release-script/prepare-release.sh
+.PHONY: prepare-release
+
+do-release: build build-releaser ## Prepare release branch with changelog for given version
+	./release-script/do-release.sh
+.PHONY: do-release
+
+build-releaser: ## Build docker image for releaser
+	echo "Building Dockerfile"
+	docker build -f ./release-script/Dockerfile_changelog -t ${IMAGE_RELEASER_NAME} .
+.PHONY: build-release
