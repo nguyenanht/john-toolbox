@@ -1,3 +1,8 @@
+### Bug Fixes
+
+* update image name ([89643b2](https://github.com/nguyenanht/john-toolbox/commit/89643b2cb9d18652c18762d3d3251888199d80bc))
+
+
 ### Features
 
 * add version in __init__.py ([02c3b6b](https://github.com/nguyenanht/john-toolbox/commit/02c3b6b1fae1d121e52b36d90b2c0d8b8b338518))
