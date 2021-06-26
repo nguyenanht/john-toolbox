@@ -78,7 +78,7 @@ bash-gpu: ## Bash gpu
 	docker exec -it $(DOCKER_NAME_GPU) bash
 .PHONY: bash-gpu
 
-tests: ## To run tests
+tests: ## To run tests inside the container
 	poetry run coverage run -m pytest -p no:cacheprovider tests/
 .PHONY: tests
 
@@ -92,7 +92,7 @@ docs: build ## Build and generate docs
 	$(DOCKER_RUN) 'touch ./docs/.nojekyll'
 .PHONY: doc
 
-docs-prod: install ## Build and generate docs in production
+docs-prod: install ## Build and generate docs in production automatically
 	$(DOCKER_RUN) 'poetry run sphinx-build ./docs-scripts/source ./docs -b html'
 	$(DOCKER_RUN) 'touch ./docs/.nojekyll'
 .PHONY: docprod
