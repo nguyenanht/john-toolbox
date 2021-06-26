@@ -1,0 +1,32 @@
+john\_toolbox.utils.color\_formatter
+====================================
+
+.. automodule:: john_toolbox.utils.color_formatter
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      ColoredFormatter
+   
+   
+
+   
+   
+   
+
+
+

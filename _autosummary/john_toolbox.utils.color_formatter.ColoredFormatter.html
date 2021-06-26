@@ -1,0 +1,394 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>john_toolbox.utils.color_formatter.ColoredFormatter &mdash; PLUS-ULTRA  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/./default.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="john_toolbox.utils.logger_config" href="john_toolbox.utils.logger_config.html" />
+    <link rel="prev" title="john_toolbox.utils.color_formatter" href="john_toolbox.utils.color_formatter.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PLUS-ULTRA
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="john_toolbox.html">john_toolbox</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="john_toolbox.preprocessing.html">john_toolbox.preprocessing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="john_toolbox.utils.html">john_toolbox.utils</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="john_toolbox.utils.color_formatter.html">john_toolbox.utils.color_formatter</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">john_toolbox.utils.color_formatter.ColoredFormatter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="john_toolbox.utils.logger_config.html">john_toolbox.utils.logger_config</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PLUS-ULTRA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="john_toolbox.html">john_toolbox</a> &raquo;</li>
+        
+          <li><a href="john_toolbox.utils.html">john_toolbox.utils</a> &raquo;</li>
+        
+          <li><a href="john_toolbox.utils.color_formatter.html">john_toolbox.utils.color_formatter</a> &raquo;</li>
+        
+      <li>john_toolbox.utils.color_formatter.ColoredFormatter</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/_autosummary/john_toolbox.utils.color_formatter.ColoredFormatter.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="john-toolbox-utils-color-formatter-coloredformatter">
+<h1>john_toolbox.utils.color_formatter.ColoredFormatter<a class="headerlink" href="#john-toolbox-utils-color-formatter-coloredformatter" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="john_toolbox.utils.color_formatter.ColoredFormatter">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">john_toolbox.utils.color_formatter.</span></code><code class="sig-name descname"><span class="pre">ColoredFormatter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/john_toolbox/utils/color_formatter.html#ColoredFormatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#john_toolbox.utils.color_formatter.ColoredFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.Formatter</span></code></p>
+<p>Special custom formatter for colorizing log messages!</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#john_toolbox.utils.color_formatter.ColoredFormatter.converter" title="john_toolbox.utils.color_formatter.ColoredFormatter.converter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">converter</span></code></a></p></td>
+<td><p>localtime([seconds]) -&gt; (tm_year,tm_mon,tm_mday,tm_hour,tm_min,</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#john_toolbox.utils.color_formatter.ColoredFormatter.format" title="john_toolbox.utils.color_formatter.ColoredFormatter.format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format</span></code></a></p></td>
+<td><p>Applies the color formats</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#john_toolbox.utils.color_formatter.ColoredFormatter.formatException" title="john_toolbox.utils.color_formatter.ColoredFormatter.formatException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formatException</span></code></a></p></td>
+<td><p>Format and return the specified exception information as a string.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">formatMessage</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#john_toolbox.utils.color_formatter.ColoredFormatter.formatStack" title="john_toolbox.utils.color_formatter.ColoredFormatter.formatStack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formatStack</span></code></a></p></td>
+<td><p>This method is provided as an extension point for specialized formatting of stack information.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#john_toolbox.utils.color_formatter.ColoredFormatter.formatTime" title="john_toolbox.utils.color_formatter.ColoredFormatter.formatTime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">formatTime</span></code></a></p></td>
+<td><p>Return the creation time of the specified LogRecord as formatted text.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setLevelColor</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#john_toolbox.utils.color_formatter.ColoredFormatter.usesTime" title="john_toolbox.utils.color_formatter.ColoredFormatter.usesTime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">usesTime</span></code></a></p></td>
+<td><p>Check if the format uses the creation time of the record.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">BLACK</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">BLUE</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">BROWN</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">CYAN</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">DARK_GREY</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">GREEN</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">GREY</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">LIGHT_BLUE</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">LIGHT_CYAN</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">LIGHT_GREEN</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">LIGHT_PURPLE</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">LIGHT_RED</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">PURPLE</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">RED</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">RESET</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">WHITE</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">YELLOW</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_msec_format</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">default_time_format</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="john_toolbox.utils.color_formatter.ColoredFormatter.converter">
+<code class="sig-name descname"><span class="pre">converter</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#john_toolbox.utils.color_formatter.ColoredFormatter.converter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>localtime([seconds]) -&gt; (tm_year,tm_mon,tm_mday,tm_hour,tm_min,</dt><dd><p>tm_sec,tm_wday,tm_yday,tm_isdst)</p>
+</dd>
+</dl>
+<p>Convert seconds since the Epoch to a time tuple expressing local time.
+When ‘seconds’ is not passed in, convert the current time instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="john_toolbox.utils.color_formatter.ColoredFormatter.format">
+<code class="sig-name descname"><span class="pre">format</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/john_toolbox/utils/color_formatter.html#ColoredFormatter.format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#john_toolbox.utils.color_formatter.ColoredFormatter.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies the color formats</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="john_toolbox.utils.color_formatter.ColoredFormatter.formatException">
+<code class="sig-name descname"><span class="pre">formatException</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ei</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#john_toolbox.utils.color_formatter.ColoredFormatter.formatException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format and return the specified exception information as a string.</p>
+<p>This default implementation just uses
+traceback.print_exception()</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="john_toolbox.utils.color_formatter.ColoredFormatter.formatStack">
+<code class="sig-name descname"><span class="pre">formatStack</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stack_info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#john_toolbox.utils.color_formatter.ColoredFormatter.formatStack" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is provided as an extension point for specialized
+formatting of stack information.</p>
+<p>The input data is a string as returned from a call to
+<code class="xref py py-func docutils literal notranslate"><span class="pre">traceback.print_stack()</span></code>, but with the last trailing newline
+removed.</p>
+<p>The base implementation just returns the value passed in.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="john_toolbox.utils.color_formatter.ColoredFormatter.formatTime">
+<code class="sig-name descname"><span class="pre">formatTime</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datefmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#john_toolbox.utils.color_formatter.ColoredFormatter.formatTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the creation time of the specified LogRecord as formatted text.</p>
+<p>This method should be called from format() by a formatter which
+wants to make use of a formatted time. This method can be overridden
+in formatters to provide for any specific requirement, but the
+basic behaviour is as follows: if datefmt (a string) is specified,
+it is used with time.strftime() to format the creation time of the
+record. Otherwise, an ISO8601-like (or RFC 3339-like) format is used.
+The resulting string is returned. This function uses a user-configurable
+function to convert the creation time to a tuple. By default,
+time.localtime() is used; to change this for a particular formatter
+instance, set the ‘converter’ attribute to a function with the same
+signature as time.localtime() or time.gmtime(). To change it for all
+formatters, for example if you want all logging times to be shown in GMT,
+set the ‘converter’ attribute in the Formatter class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="john_toolbox.utils.color_formatter.ColoredFormatter.usesTime">
+<code class="sig-name descname"><span class="pre">usesTime</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#john_toolbox.utils.color_formatter.ColoredFormatter.usesTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the format uses the creation time of the record.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="john_toolbox.utils.logger_config.html" class="btn btn-neutral float-right" title="john_toolbox.utils.logger_config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="john_toolbox.utils.color_formatter.html" class="btn btn-neutral float-left" title="john_toolbox.utils.color_formatter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, johnathan nguyen.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

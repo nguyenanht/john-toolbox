@@ -1,0 +1,56 @@
+john\_toolbox.utils.color\_formatter.ColoredFormatter
+=====================================================
+
+.. currentmodule:: john_toolbox.utils.color_formatter
+
+.. autoclass:: ColoredFormatter
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ColoredFormatter.converter
+      ~ColoredFormatter.format
+      ~ColoredFormatter.formatException
+      ~ColoredFormatter.formatMessage
+      ~ColoredFormatter.formatStack
+      ~ColoredFormatter.formatTime
+      ~ColoredFormatter.setLevelColor
+      ~ColoredFormatter.usesTime
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ColoredFormatter.BLACK
+      ~ColoredFormatter.BLUE
+      ~ColoredFormatter.BROWN
+      ~ColoredFormatter.CYAN
+      ~ColoredFormatter.DARK_GREY
+      ~ColoredFormatter.GREEN
+      ~ColoredFormatter.GREY
+      ~ColoredFormatter.LIGHT_BLUE
+      ~ColoredFormatter.LIGHT_CYAN
+      ~ColoredFormatter.LIGHT_GREEN
+      ~ColoredFormatter.LIGHT_PURPLE
+      ~ColoredFormatter.LIGHT_RED
+      ~ColoredFormatter.PURPLE
+      ~ColoredFormatter.RED
+      ~ColoredFormatter.RESET
+      ~ColoredFormatter.WHITE
+      ~ColoredFormatter.YELLOW
+      ~ColoredFormatter.default_msec_format
+      ~ColoredFormatter.default_time_format
+   
+   
