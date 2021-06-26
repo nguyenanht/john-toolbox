@@ -39,6 +39,19 @@ If you want examples. please refer to notebooks directory. It contains tutorials
 Give a ⭐️ if this project helped you!
 
 
+## Useful link
+
+#### how to publish new version in pypi with poetry ?
+https://johnfraney.ca/posts/2019/05/28/create-publish-python-package-poetry/
+
+#### how to create a new release ?
+https://www.atlassian.com/fr/git/tutorials/comparing-workflows/gitflow-workflow
+
+#### how to generate docs
+https://github.com/JamesALeedham/Sphinx-Autosummary-Recursion
+
+#### how to deploy with github actions
+https://blog.flozz.fr/2020/09/21/deployer-automatiquement-sur-github-pages-avec-github-actions/
 
 ---
 _This README was created with the [markdown-readme-generator](https://github.com/pedroermarinho/markdown-readme-generator)_
