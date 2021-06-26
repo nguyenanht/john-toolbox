@@ -109,6 +109,10 @@ do-release: build build-releaser ## Prepare release branch with changelog for gi
 	./release-script/do-release.sh
 .PHONY: do-release
 
+testy: ## jsjdjjd
+	./release-script/testy.sh
+.PHONY: testy
+
 build-releaser: ## Build docker image for releaser
 	echo "Building Dockerfile"
 	docker build -f ./release-script/Dockerfile_changelog -t ${IMAGE_RELEASER_NAME} .
