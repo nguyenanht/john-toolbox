@@ -1,3 +1,11 @@
+### Features
+
+* add version in __init__.py ([02c3b6b](https://github.com/nguyenanht/john-toolbox/commit/02c3b6b1fae1d121e52b36d90b2c0d8b8b338518))
+* improve logging ([7123a15](https://github.com/nguyenanht/john-toolbox/commit/7123a154fceac04aff8536aeebe872f339c2718b))
+* improve logging ([26f1dba](https://github.com/nguyenanht/john-toolbox/commit/26f1dba7db9ab93d3ed8381701dfdcf936a4db2d))
+* update version packages ([727ab54](https://github.com/nguyenanht/john-toolbox/commit/727ab542cc456053aeec4145b13aa65e28fd74a5))
+
+
 
 ## [0.3.6](https://github.com/nguyenanht/john-toolbox/compare/v0.3.5...v0.3.6) (2021-04-06)
 
