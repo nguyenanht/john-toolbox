@@ -1,4 +1,4 @@
-john\_toolbox.utils
+﻿john\_toolbox.utils
 ===================
 
 .. automodule:: john_toolbox.utils
@@ -26,5 +26,6 @@ john\_toolbox.utils
    :template: custom-module-template.rst
    :recursive:
 
+   john_toolbox.utils.color_formatter
    john_toolbox.utils.logger_config
 
