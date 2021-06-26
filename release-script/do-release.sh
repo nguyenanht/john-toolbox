@@ -4,9 +4,21 @@
 set -e
 
 read -p 'Release version: ' version
-read -p 'You personal access token for Github: ' token
-read -p 'Your username for pipy: ' pipyUser
-read -p 'Your password for pipy: ' pipyPassword
+
+source .env
+
+if [ -z "${GITHUB_PAT}" ]; then
+  read -p 'You personal access token for Github: ' GITHUB_PAT
+fi
+
+if [ -z "${pipyUser}" ]; then
+  read -p 'Your username for pipy: ' pipyUser
+fi
+
+if [ -z "${pipyPassword}" ]; then
+  read -p 'Your password for pipy: ' pipyPassword
+fi
+
 
 echo ${version} | grep v && echo "Version should be x.y.z (for example, 1.1.1, 2.0.0, ...)" && exit -1
 
@@ -44,7 +56,7 @@ echo "Pushing tag"
 git push origin --tags
 
 echo "Making github release"
-docker run -v ${PWD}:/work -w /work --entrypoint "" release-changelog:latest conventional-github-releaser -p angular --token ${token}
+docker run -v ${PWD}:/work -w /work --entrypoint "" release-changelog:latest conventional-github-releaser -p angular --token ${GITHUB_PAT}
 
 # Build release
 echo "Building latest build"
