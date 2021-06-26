@@ -15,8 +15,7 @@ john\_toolbox.utils.logger\_config
       :toctree:
       :nosignatures:
    
-      get_console_handler
-      get_logger
+      setup_log_config
    
    
 
