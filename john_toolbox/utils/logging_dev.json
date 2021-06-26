@@ -3,12 +3,12 @@
     "disable_existing_loggers": false,
     "formatters": {
         "simple": {
-            "()" : "color_formatter.ColoredFormatter",
-            "format":  "%(levelname)s - %(name)s - %(funcName)s:%(lineno)d — %(message)s",
+            "()" : "john_toolbox.utils.color_formatter.ColoredFormatter",
+            "format":  "[%(levelname)s] - %(module)s - %(funcName)s:%(lineno)d — %(message)s",
             "datefmt": "%Y-%m-%dT%H:%M:%SZ"
         }
     },
-        "handlers": {
+    "handlers": {
         "console": {
             "class": "logging.StreamHandler",
             "level": "DEBUG",
@@ -17,7 +17,7 @@
         }
     },
     "root": {
-        "level": "INFO",
+        "level": "DEBUG",
         "handlers": ["console"]
     }
 }
