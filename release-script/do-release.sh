@@ -5,7 +5,9 @@ set -e
 
 read -p 'Release version: ' version
 
-source .env
+GITHUB_PAT="$( awk -F'=' '/^GITHUB_PAT/ { print $2}' .env)"
+pipyUser="$( awk -F'=' '/^pipyUser/ { print $2}' .env)"
+pipyPassword="$( awk -F'=' '/^pipyPassword/ { print $2}' .env)"
 
 if [ -z "${GITHUB_PAT}" ]; then
   read -p 'You personal access token for Github: ' GITHUB_PAT
@@ -70,4 +72,5 @@ git checkout develop
 git push origin :release/${version}
 
 cd ${localDir}
+sudo chmod -R 777 ${releaseDir}
 rm -rf ${releaseDir}
