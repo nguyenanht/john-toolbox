@@ -1,3 +1,7 @@
+
+## [0.3.7](https://github.com/nguyenanht/john-toolbox/compare/v0.3.6...v0.3.7) (2021-06-26)
+
+
 ### Bug Fixes
 
 * update image name ([89643b2](https://github.com/nguyenanht/john-toolbox/commit/89643b2cb9d18652c18762d3d3251888199d80bc))
