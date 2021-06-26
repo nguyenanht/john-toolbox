@@ -3,9 +3,10 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
 from john_toolbox.preprocessing.utils import compute_in_parallel
-from john_toolbox.utils.logger_config import get_logger
 
-logger = get_logger(logger_name=__name__)
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class SelectColumnsTransformer(BaseEstimator, TransformerMixin):
@@ -35,8 +36,8 @@ class DebugTransformer(BaseEstimator, TransformerMixin):
         self.type = None
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
-        logger.debug(f"SHAPE : {X.shape}")
-        logger.debug(f"COLUMNS : {X.columns}")
+        logger.info(f"SHAPE : {X.shape}")
+        logger.info(f"COLUMNS : {X.columns}")
 
         self.columns = X.columns
         self.type = X.dtypes
