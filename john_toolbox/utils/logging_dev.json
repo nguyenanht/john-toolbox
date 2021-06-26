@@ -1,0 +1,23 @@
+{
+    "version": 1,
+    "disable_existing_loggers": false,
+    "formatters": {
+        "simple": {
+            "()" : "john_toolbox.utils.color_formatter.ColoredFormatter",
+            "format":  "[%(levelname)s] - %(module)s - %(funcName)s:%(lineno)d — %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%SZ"
+        }
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "simple",
+            "stream": "ext://sys.stdout"
+        }
+    },
+    "root": {
+        "level": "DEBUG",
+        "handlers": ["console"]
+    }
+}

@@ -3,9 +3,9 @@ from typing import List
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
-from john_toolbox.utils.logger_config import get_logger
+import logging
 
-logger = get_logger(logger_name=__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 class PandasPipeline:

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "john_toolbox"
-version = "0.3.6"
+version = "0.3.6.1"
 description = "Wrapper for transformers scikit learn pipeline and wrapper for ml model"
 authors = ["john <contact@nguyenjohnathan.com>"]
 # New attributes
