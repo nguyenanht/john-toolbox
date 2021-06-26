@@ -19,7 +19,7 @@ cd john-toolbox
 # Create release branch and push it
 git checkout -b release/${version}
 # Change version of package
-docker run --rm -v ${PWD}:/work -w /work tabnet:latest poetry version ${version}
+docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry version ${version}
 # Generate docs
 make install doc
 # Add modified files
