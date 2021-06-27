@@ -19,7 +19,10 @@ build:
 .PHONY: build
 
 install: build ## First time: Build image, and install all the dependencies, including jupyter
+	echo "Installing dependencies"
 	docker run --rm     -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c 'poetry install'
+	echo "Activating notebook extension"
+	make up-notebook-extension
 	echo "Changing current folder rights"
 	sudo chmod -R 777 .cache
 .PHONY: install
@@ -30,10 +33,18 @@ build-gpu:
 .PHONY: build-gpu
 
 install-gpu: build-gpu ## First time: Build image gpu, and install all the dependencies, including jupyter
+	echo "Installing dependencies"
 	docker run --gpus all --rm -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c  'poetry install'
+	echo "Activating notebook extension"
+	make up-notebook-extension
 	echo "Changing current folder rights"
 	sudo chmod -R 777 .cache
 .PHONY: install-gpu
+
+up-notebook-extension: ## Activate useful notebook extensions
+	$(DOCKER_RUN) "poetry run jupyter contrib nbextension install --sys-prefix --symlink"
+	$(DOCKER_RUN) "poetry run jupyter nbextension enable autosavetime/main --sys-prefix && poetry run jupyter nbextension enable tree-filter/index --sys-prefix && poetry run jupyter nbextension enable splitcell/splitcell --sys-prefix && poetry run jupyter nbextension enable toc2/main --sys-prefix && poetry run jupyter nbextension enable toggle_all_line_numbers/main --sys-prefix && poetry run jupyter nbextension enable cell_filter/cell_filter --sys-prefix && poetry run jupyter nbextension enable code_prettify/autopep8 --sys-prefix"
+.PHONY: up-notebook-extension
 
 start: ## To get inside the container (can launch "poetry shell" from inside or "poetry add <package>")
 	echo "Starting container ${IMAGE_NAME}"
@@ -46,14 +57,6 @@ start-gpu: ## To get inside the gpu container (can launch "poetry shell" from in
 .PHONY: start-gpu
 
 notebook: ## Start the Jupyter notebook (must be run from inside the container)
-	poetry run jupyter contrib nbextension install
-	poetry run jupyter nbextension enable autosavetime/main
-	poetry run jupyter nbextension enable tree-filter/index
-	poetry run jupyter nbextension enable splitcell/splitcell
-	poetry run jupyter nbextension enable toc2/main
-	poetry run jupyter nbextension enable toggle_all_line_numbers/main
-	poetry run jupyter nbextension enable cell_filter/cell_filter
-	poetry run jupyter nbextension enable code_prettify/autopep8
 	poetry run jupyter notebook --allow-root --ip 0.0.0.0 --port ${PORT} --no-browser --notebook-dir .
 	# &> /dev/null &
 .PHONY: notebook
@@ -109,9 +112,6 @@ do-release: build build-releaser ## Prepare release branch with changelog for gi
 	./release-script/do-release.sh
 .PHONY: do-release
 
-testy: ## jsjdjjd
-	./release-script/testy.sh
-.PHONY: testy
 
 build-releaser: ## Build docker image for releaser
 	echo "Building Dockerfile"
