@@ -166,9 +166,22 @@
 <div class="viewcode-block" id="SelectColumnsTransformer"><a class="viewcode-back" href="../../../_autosummary/john_toolbox.preprocessing.pandas_transformers.SelectColumnsTransformer.html#john_toolbox.preprocessing.pandas_transformers.SelectColumnsTransformer">[docs]</a><span class="k">class</span> <span class="nc">SelectColumnsTransformer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class aims to keep desired columns in Sklearn pipeline.</span>
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    DropColumnsTransformer :  Drop columns from DataFrame.</span>
+<span class="sd">    EncoderTransformer :  Drop columns from DataFrame.</span>
+<span class="sd">    FunctionTransformer : Use of standard Encoder from sklearn.</span>
+<span class="sd">    DebugTransformer : Keep track of information about DataFrame between steps.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        columns : List[str]</span>
+<span class="sd">            List of column name to keep.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">columns</span>
 
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="o">**</span><span class="n">transform_params</span><span class="p">):</span>
@@ -182,19 +195,26 @@
 <div class="viewcode-block" id="DebugTransformer"><a class="viewcode-back" href="../../../_autosummary/john_toolbox.preprocessing.pandas_transformers.DebugTransformer.html#john_toolbox.preprocessing.pandas_transformers.DebugTransformer">[docs]</a><span class="k">class</span> <span class="nc">DebugTransformer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class save information between steps in sklearn pipeline and is used for debug purposes.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    SelectColumnsTransformer : Keep columns from DataFrame.</span>
+<span class="sd">    DropColumnsTransformer :  Drop columns from DataFrame.</span>
+<span class="sd">    EncoderTransformer :  Drop columns from DataFrame.</span>
+<span class="sd">    FunctionTransformer : Use of standard Encoder from sklearn.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SHAPE : </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;COLUMNS : </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dtypes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtypes</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dtypes</span>
 
         <span class="k">return</span> <span class="n">X</span>
 
@@ -205,9 +225,23 @@
 <div class="viewcode-block" id="DropColumnsTransformer"><a class="viewcode-back" href="../../../_autosummary/john_toolbox.preprocessing.pandas_transformers.DropColumnsTransformer.html#john_toolbox.preprocessing.pandas_transformers.DropColumnsTransformer">[docs]</a><span class="k">class</span> <span class="nc">DropColumnsTransformer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This class let you remove a column in Sklearn pipeline.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    SelectColumnsTransformer : Keep columns from DataFrame.</span>
+<span class="sd">    EncoderTransformer :  Drop columns from DataFrame.</span>
+<span class="sd">    FunctionTransformer : Use of standard Encoder from sklearn.</span>
+<span class="sd">    DebugTransformer : Keep track of information about DataFrame between steps.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns_to_drop</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        columns_to_drop : List[str]</span>
+<span class="sd">            List of column to drop.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">columns_to_drop</span> <span class="o">=</span> <span class="n">columns_to_drop</span>
 
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="o">**</span><span class="n">transform_params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
@@ -220,21 +254,65 @@
 
 
 <div class="viewcode-block" id="EncoderTransformer"><a class="viewcode-back" href="../../../_autosummary/john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.html#john_toolbox.preprocessing.pandas_transformers.EncoderTransformer">[docs]</a><span class="k">class</span> <span class="nc">EncoderTransformer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class let you use standard Encoder from sklearn.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    encoder :</span>
+<span class="sd">        Standard sklearn Encoder. For example, you can provide OneHotEncoder.</span>
+<span class="sd">    column : str, Optional</span>
+<span class="sd">        Column to transform with the encoder.</span>
+<span class="sd">    encoder_args : Dict, Optional</span>
+<span class="sd">        Arguments to pass to the sklearn encoder.</span>
+<span class="sd">    new_cols_prefix : str, Optional</span>
+<span class="sd">        If you provide value, all generated column will have a this value as prefix.</span>
+<span class="sd">    is_drop_input_col : bool, Optional, default True</span>
+<span class="sd">        the old column will be removed if self.column != new_cols_prefix and is_drop_input_col == True</span>
+<span class="sd">        or if self.column == new_cols_prefix</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    SelectColumnsTransformer : Keep columns from DataFrame.</span>
+<span class="sd">    DropColumnsTransformer :  Drop columns from DataFrame.</span>
+<span class="sd">    FunctionTransformer : Apply function to a column.</span>
+<span class="sd">    DebugTransformer : Keep track of information about DataFrame between steps.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">encoder</span><span class="p">,</span>
-        <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">encoder_args</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">new_cols_prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">is_drop_input_col</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">column</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">encoder_args</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">new_cols_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_drop_input_col</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-        <span class="k">if</span> <span class="n">encoder_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">encoder_args</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        encoder :</span>
+<span class="sd">            Standard sklearn Encoder. For example, you can provide OneHotEncoder.</span>
+<span class="sd">        column : str, Optional</span>
+<span class="sd">            Column to transform with the encoder.</span>
+<span class="sd">        encoder_args : Dict, Optional</span>
+<span class="sd">            Arguments to pass to the sklearn encoder.</span>
+<span class="sd">        new_cols_prefix : str, Optional</span>
+<span class="sd">            If you provide value, all generated column will have a this value as prefix.</span>
+<span class="sd">        is_drop_input_col : bool, Optional, default True</span>
+<span class="sd">            the old column will be removed if self.column != new_cols_prefix and is_drop_input_col == True</span>
+<span class="sd">            or if self.column == new_cols_prefix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder_args</span> <span class="o">=</span> <span class="n">encoder_args</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoder_args</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">encoder_args</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">column</span> <span class="o">=</span> <span class="n">column</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">encoder</span><span class="p">(</span><span class="o">**</span><span class="n">encoder_args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoder</span> <span class="o">=</span> <span class="n">encoder</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder_args</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">new_cols_prefix</span> <span class="o">=</span> <span class="n">new_cols_prefix</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_drop_input_col</span> <span class="o">=</span> <span class="n">is_drop_input_col</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_cols_prefix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">new_cols_prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">column</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">encoder</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">_&quot;</span>
 
@@ -274,8 +352,36 @@
 
 
 <div class="viewcode-block" id="FunctionTransformer"><a class="viewcode-back" href="../../../_autosummary/john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.html#john_toolbox.preprocessing.pandas_transformers.FunctionTransformer">[docs]</a><span class="k">class</span> <span class="nc">FunctionTransformer</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;from</span>
-<span class="sd">    https://stackoverflow.com/questions/42844457/scikit-learn-applying-an-arbitary-function-as-part-of-a-pipeline</span>
+    <span class="sd">&quot;&quot;&quot;Apply function Transformer.</span>
+
+<span class="sd">    For example, please refer to : https://github.com/nguyenanht/john-toolbox/blob/develop/notebooks/tutorial1%20-%20PandasPipeline%20%26%20PandasTransformer.ipynb</span>
+
+<span class="sd">    from https://stackoverflow.com/questions/42844457/scikit-learn-applying-an-arbitary-function-as-part-of-a-pipeline</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    column : str, Optional</span>
+<span class="sd">        Column to transform with the encoder.</span>
+<span class="sd">    func : Callable</span>
+<span class="sd">        Function to apply.</span>
+<span class="sd">    dict_args: Dict</span>
+<span class="sd">        Arguments to pass to the function.</span>
+<span class="sd">    mode : str, Optional, default apply_by_multiprocessing</span>
+<span class="sd">        Mode accepted : `apply_by_multiprocessing`, `apply` or `vectorized`</span>
+<span class="sd">        `apply_by_multiprocessing`: apply the function by using total_number of cpu minus one</span>
+<span class="sd">        `apply`: apply in standard way the function.</span>
+<span class="sd">        `vectorized`: vectorise an operation. For example add 2 columns.</span>
+<span class="sd">    return_col: str, Optional, default=column</span>
+<span class="sd">        Name of the output.</span>
+<span class="sd">    drop_input_col: str, default=False</span>
+<span class="sd">        Drop the input column.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    SelectColumnsTransformer : Keep columns from DataFrame.</span>
+<span class="sd">    DropColumnsTransformer :  Drop columns from DataFrame.</span>
+<span class="sd">    EncoderTransformer :  Drop columns from DataFrame.</span>
+<span class="sd">    DebugTransformer : Keep track of information about DataFrame between steps.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
