@@ -181,8 +181,73 @@
 <h1>john_toolbox.preprocessing.pandas_transformers.EncoderTransformer<a class="headerlink" href="#john-toolbox-preprocessing-pandas-transformers-encodertransformer" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="john_toolbox.preprocessing.pandas_transformers.EncoderTransformer">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">john_toolbox.preprocessing.pandas_transformers.</span></code><code class="sig-name descname"><span class="pre">EncoderTransformer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_args</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_cols_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_drop_input_col</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/john_toolbox/preprocessing/pandas_transformers.html#EncoderTransformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.EncoderTransformer" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">john_toolbox.preprocessing.pandas_transformers.</span></code><code class="sig-name descname"><span class="pre">EncoderTransformer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_cols_prefix</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_drop_input_col</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/john_toolbox/preprocessing/pandas_transformers.html#EncoderTransformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.EncoderTransformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.TransformerMixin</span></code></p>
+<p>This class let you use standard Encoder from sklearn.</p>
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.encoder">
+<code class="sig-name descname"><span class="pre">encoder</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.encoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard sklearn Encoder. For example, you can provide OneHotEncoder.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.column">
+<code class="sig-name descname"><span class="pre">column</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Column to transform with the encoder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str, Optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.encoder_args">
+<code class="sig-name descname"><span class="pre">encoder_args</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.encoder_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Arguments to pass to the sklearn encoder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dict, Optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.new_cols_prefix">
+<code class="sig-name descname"><span class="pre">new_cols_prefix</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.new_cols_prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>If you provide value, all generated column will have a this value as prefix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str, Optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.is_drop_input_col">
+<code class="sig-name descname"><span class="pre">is_drop_input_col</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.is_drop_input_col" title="Permalink to this definition">¶</a></dt>
+<dd><p>the old column will be removed if self.column != new_cols_prefix and is_drop_input_col == True
+or if self.column == new_cols_prefix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool, Optional, default True</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="john_toolbox.preprocessing.pandas_transformers.SelectColumnsTransformer.html#john_toolbox.preprocessing.pandas_transformers.SelectColumnsTransformer" title="john_toolbox.preprocessing.pandas_transformers.SelectColumnsTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SelectColumnsTransformer</span></code></a></dt><dd><p>Keep columns from DataFrame.</p>
+</dd>
+<dt><a class="reference internal" href="john_toolbox.preprocessing.pandas_transformers.DropColumnsTransformer.html#john_toolbox.preprocessing.pandas_transformers.DropColumnsTransformer" title="john_toolbox.preprocessing.pandas_transformers.DropColumnsTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DropColumnsTransformer</span></code></a></dt><dd><p>Drop columns from DataFrame.</p>
+</dd>
+<dt><a class="reference internal" href="john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.html#john_toolbox.preprocessing.pandas_transformers.FunctionTransformer" title="john_toolbox.preprocessing.pandas_transformers.FunctionTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FunctionTransformer</span></code></a></dt><dd><p>Apply function to a column.</p>
+</dd>
+<dt><a class="reference internal" href="john_toolbox.preprocessing.pandas_transformers.DebugTransformer.html#john_toolbox.preprocessing.pandas_transformers.DebugTransformer" title="john_toolbox.preprocessing.pandas_transformers.DebugTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DebugTransformer</span></code></a></dt><dd><p>Keep track of information about DataFrame between steps.</p>
+</dd>
+</dl>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>

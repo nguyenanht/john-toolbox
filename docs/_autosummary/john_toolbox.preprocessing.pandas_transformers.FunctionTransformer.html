@@ -183,8 +183,91 @@
 <dt id="john_toolbox.preprocessing.pandas_transformers.FunctionTransformer">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">john_toolbox.preprocessing.pandas_transformers.</span></code><code class="sig-name descname"><span class="pre">FunctionTransformer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dict_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'apply_by_multiprocessing'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_col</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_input_col</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/john_toolbox/preprocessing/pandas_transformers.html#FunctionTransformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.FunctionTransformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sklearn.base.BaseEstimator</span></code></p>
-<p>from
-<a class="reference external" href="https://stackoverflow.com/questions/42844457/scikit-learn-applying-an-arbitary-function-as-part-of-a-pipeline">https://stackoverflow.com/questions/42844457/scikit-learn-applying-an-arbitary-function-as-part-of-a-pipeline</a></p>
+<p>Apply function Transformer.</p>
+<p>For example, please refer to : <a class="reference external" href="https://github.com/nguyenanht/john-toolbox/blob/develop/notebooks/tutorial1%20-%20PandasPipeline%20%26%20PandasTransformer.ipynb">https://github.com/nguyenanht/john-toolbox/blob/develop/notebooks/tutorial1%20-%20PandasPipeline%20%26%20PandasTransformer.ipynb</a></p>
+<p>from <a class="reference external" href="https://stackoverflow.com/questions/42844457/scikit-learn-applying-an-arbitary-function-as-part-of-a-pipeline">https://stackoverflow.com/questions/42844457/scikit-learn-applying-an-arbitary-function-as-part-of-a-pipeline</a></p>
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.column">
+<code class="sig-name descname"><span class="pre">column</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Column to transform with the encoder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str, Optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.func">
+<code class="sig-name descname"><span class="pre">func</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to apply.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Callable</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.dict_args">
+<code class="sig-name descname"><span class="pre">dict_args</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.dict_args" title="Permalink to this definition">¶</a></dt>
+<dd><p>Arguments to pass to the function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.mode">
+<code class="sig-name descname"><span class="pre">mode</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mode accepted : <cite>apply_by_multiprocessing</cite>, <cite>apply</cite> or <cite>vectorized</cite>
+<cite>apply_by_multiprocessing</cite>: apply the function by using total_number of cpu minus one
+<cite>apply</cite>: apply in standard way the function.
+<cite>vectorized</cite>: vectorise an operation. For example add 2 columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str, Optional, default apply_by_multiprocessing</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.return_col">
+<code class="sig-name descname"><span class="pre">return_col</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.return_col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str, Optional, default=column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.drop_input_col">
+<code class="sig-name descname"><span class="pre">drop_input_col</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_transformers.FunctionTransformer.drop_input_col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drop the input column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str, default=False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="john_toolbox.preprocessing.pandas_transformers.SelectColumnsTransformer.html#john_toolbox.preprocessing.pandas_transformers.SelectColumnsTransformer" title="john_toolbox.preprocessing.pandas_transformers.SelectColumnsTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SelectColumnsTransformer</span></code></a></dt><dd><p>Keep columns from DataFrame.</p>
+</dd>
+<dt><a class="reference internal" href="john_toolbox.preprocessing.pandas_transformers.DropColumnsTransformer.html#john_toolbox.preprocessing.pandas_transformers.DropColumnsTransformer" title="john_toolbox.preprocessing.pandas_transformers.DropColumnsTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DropColumnsTransformer</span></code></a></dt><dd><p>Drop columns from DataFrame.</p>
+</dd>
+<dt><a class="reference internal" href="john_toolbox.preprocessing.pandas_transformers.EncoderTransformer.html#john_toolbox.preprocessing.pandas_transformers.EncoderTransformer" title="john_toolbox.preprocessing.pandas_transformers.EncoderTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EncoderTransformer</span></code></a></dt><dd><p>Drop columns from DataFrame.</p>
+</dd>
+<dt><a class="reference internal" href="john_toolbox.preprocessing.pandas_transformers.DebugTransformer.html#john_toolbox.preprocessing.pandas_transformers.DebugTransformer" title="john_toolbox.preprocessing.pandas_transformers.DebugTransformer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DebugTransformer</span></code></a></dt><dd><p>Keep track of information about DataFrame between steps.</p>
+</dd>
+</dl>
+</div>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>

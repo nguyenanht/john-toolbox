@@ -9,22 +9,60 @@ LOGGER = logging.getLogger(__name__)
 
 
 class PandasPipeline:
+    """
+    Wrapper for handling pandas in sklearn pipeline.
+    Instead of returning a numpy array, it returns Pandas DataFrame with all columns name.
+
+    Attributes
+    ----------
+    target_name : str
+                target column name
+    columns : List
+        family name of the person
+
+    Methods
+    -------
+        fit_transform(df):
+            Fit all transformers and transforms DataFrame.
+        transform(df):
+            Transforms DataFrame with the fitted Pipeline.
+    """
+
     def __init__(self, steps: List, target_name: str, verbose: bool = True):
+        """
+
+        Parameters
+        ----------
+        steps : list[tuple[str, john_toolbox.preprocessing.pandas_transformer]
+            List of tuple with name of the step and pandas_transformer.
+
+        target_name : str
+            Column name of the target.
+        verbose :bool
+            Display time execution for each steps.
+
+        Examples
+        --------
+        How to use PandasPipeline and pandas_transformers.
+        >>> from john_toolbox.preprocessing.pandas_transformers import DropColumnsTransformer
+        >>> step_list = [("drop_column", DropColumnsTransformer(columns_to_drop=["target_name"]))]
+        >>> PandasPipeline(steps=step_list, target_name="target_name", verbose=True)
+        """
         self.target_name = target_name
-        self.columns = None
+        self.columns = []
         self._some_target_modality = None
 
-        self.feature_processing = Pipeline(
+        self.sklearn_pipeline = Pipeline(
             steps=steps,
             verbose=verbose,
         )
 
     def fit_transform(self, df: pd.DataFrame) -> pd.DataFrame:
-        self.columns = df.columns
+        self.columns = list(df.columns)
         self._some_target_modality = df[self.target_name].iat[
             0
         ]  # in case we do not have the target for the prediction
-        return self.feature_processing.fit_transform(df)
+        return self.sklearn_pipeline.fit_transform(df)
 
     def transform(self, df: pd.DataFrame) -> pd.DataFrame:
         df = df.copy()
@@ -33,4 +71,4 @@ class PandasPipeline:
 
         df = df[self.columns]  # same order as df_train
 
-        return self.feature_processing.transform(df)
+        return self.sklearn_pipeline.transform(df)
