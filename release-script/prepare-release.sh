@@ -21,7 +21,7 @@ git checkout -b release/${version}
 # Change version of package
 docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry version ${version}
 # Generate docs
-make install doc
+make install docs
 # Add modified files
 git add pyproject.toml docs/
 # Commit release

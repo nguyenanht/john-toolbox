@@ -1,4 +1,22 @@
 
+## [0.4.5](https://github.com/nguyenanht/john-toolbox/compare/v0.4.4...v0.4.5) (2021-07-17)
+
+
+### Bug Fixes
+
+* prepare and do-release ([020f108](https://github.com/nguyenanht/john-toolbox/commit/020f1081c3ba2a64d670c5897361748649c1f7e5))
+
+
+### Features
+
+* add useful links section ([b8f72f1](https://github.com/nguyenanht/john-toolbox/commit/b8f72f18ffc90c2d515c18b0cb182046024aba3f))
+* improve instalation of nbextension ([8f59449](https://github.com/nguyenanht/john-toolbox/commit/8f59449d05643a370e7bfd12a914f044f616c62c))
+* init readme ([59d1417](https://github.com/nguyenanht/john-toolbox/commit/59d14174f2d178bdfc8204344bc2e7b4d38094a8))
+* prepare and do-release ([6977b2a](https://github.com/nguyenanht/john-toolbox/commit/6977b2a41c3808c794fce393d2bd174c83990eae))
+* update deps ([3d1256c](https://github.com/nguyenanht/john-toolbox/commit/3d1256c488e652c5a389c225bcae784c66597c83))
+
+
+
 ## [0.4.4](https://github.com/nguyenanht/john-toolbox/compare/v0.4.3...v0.4.4) (2021-06-26)
 
 
