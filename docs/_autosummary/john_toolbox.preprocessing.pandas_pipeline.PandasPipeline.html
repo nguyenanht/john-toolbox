@@ -179,6 +179,42 @@
 <dt id="john_toolbox.preprocessing.pandas_pipeline.PandasPipeline">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">john_toolbox.preprocessing.pandas_pipeline.</span></code><code class="sig-name descname"><span class="pre">PandasPipeline</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_name</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/john_toolbox/preprocessing/pandas_pipeline.html#PandasPipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#john_toolbox.preprocessing.pandas_pipeline.PandasPipeline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrapper for handling pandas in sklearn pipeline.
+Instead of returning a numpy array, it returns Pandas DataFrame with all columns name.</p>
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_pipeline.PandasPipeline.target_name">
+<code class="sig-name descname"><span class="pre">target_name</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_pipeline.PandasPipeline.target_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>target column name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="john_toolbox.preprocessing.pandas_pipeline.PandasPipeline.columns">
+<code class="sig-name descname"><span class="pre">columns</span></code><a class="headerlink" href="#john_toolbox.preprocessing.pandas_pipeline.PandasPipeline.columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>family name of the person</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">fit_transform(df):</span></code></dt>
+<dd><p>Fit all transformers and transforms DataFrame.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt>
+<code class="sig-name descname"><span class="pre">transform(df):</span></code></dt>
+<dd><p>Transforms DataFrame with the fitted Pipeline.</p>
+</dd></dl>
+
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
 <colgroup>

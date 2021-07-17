@@ -163,22 +163,60 @@
 
 
 <div class="viewcode-block" id="PandasPipeline"><a class="viewcode-back" href="../../../_autosummary/john_toolbox.preprocessing.pandas_pipeline.PandasPipeline.html#john_toolbox.preprocessing.pandas_pipeline.PandasPipeline">[docs]</a><span class="k">class</span> <span class="nc">PandasPipeline</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wrapper for handling pandas in sklearn pipeline.</span>
+<span class="sd">    Instead of returning a numpy array, it returns Pandas DataFrame with all columns name.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    target_name : str</span>
+<span class="sd">                target column name</span>
+<span class="sd">    columns : List</span>
+<span class="sd">        family name of the person</span>
+
+<span class="sd">    Methods</span>
+<span class="sd">    -------</span>
+<span class="sd">        fit_transform(df):</span>
+<span class="sd">            Fit all transformers and transforms DataFrame.</span>
+<span class="sd">        transform(df):</span>
+<span class="sd">            Transforms DataFrame with the fitted Pipeline.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">target_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        steps : list[tuple[str, john_toolbox.preprocessing.pandas_transformer]</span>
+<span class="sd">            List of tuple with name of the step and pandas_transformer.</span>
+
+<span class="sd">        target_name : str</span>
+<span class="sd">            Column name of the target.</span>
+<span class="sd">        verbose :bool</span>
+<span class="sd">            Display time execution for each steps.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        How to use PandasPipeline and pandas_transformers.</span>
+<span class="sd">        &gt;&gt;&gt; from john_toolbox.preprocessing.pandas_transformers import DropColumnsTransformer</span>
+<span class="sd">        &gt;&gt;&gt; step_list = [(&quot;drop_column&quot;, DropColumnsTransformer(columns_to_drop=[&quot;target_name&quot;]))]</span>
+<span class="sd">        &gt;&gt;&gt; PandasPipeline(steps=step_list, target_name=&quot;target_name&quot;, verbose=True)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">target_name</span> <span class="o">=</span> <span class="n">target_name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_some_target_modality</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">feature_processing</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sklearn_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
             <span class="n">steps</span><span class="o">=</span><span class="n">steps</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_some_target_modality</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">target_name</span><span class="p">]</span><span class="o">.</span><span class="n">iat</span><span class="p">[</span>
             <span class="mi">0</span>
         <span class="p">]</span>  <span class="c1"># in case we do not have the target for the prediction</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_processing</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sklearn_pipeline</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -187,7 +225,7 @@
 
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>  <span class="c1"># same order as df_train</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_processing</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sklearn_pipeline</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
