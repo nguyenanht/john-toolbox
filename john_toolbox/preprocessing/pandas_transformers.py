@@ -12,9 +12,22 @@ logger = logging.getLogger(__name__)
 class SelectColumnsTransformer(BaseEstimator, TransformerMixin):
     """
     This class aims to keep desired columns in Sklearn pipeline.
+    See Also
+    --------
+    DropColumnsTransformer :  Drop columns from DataFrame.
+    EncoderTransformer :  Drop columns from DataFrame.
+    FunctionTransformer : Use of standard Encoder from sklearn.
+    DebugTransformer : Keep track of information about DataFrame between steps.
     """
 
     def __init__(self, columns: List[str] = None):
+        """
+
+        Parameters
+        ----------
+        columns : List[str]
+            List of column name to keep.
+        """
         self.columns = columns
 
     def transform(self, X, **transform_params):
@@ -28,19 +41,26 @@ class SelectColumnsTransformer(BaseEstimator, TransformerMixin):
 class DebugTransformer(BaseEstimator, TransformerMixin):
     """
     This class save information between steps in sklearn pipeline and is used for debug purposes.
+
+    See Also
+    --------
+    SelectColumnsTransformer : Keep columns from DataFrame.
+    DropColumnsTransformer :  Drop columns from DataFrame.
+    EncoderTransformer :  Drop columns from DataFrame.
+    FunctionTransformer : Use of standard Encoder from sklearn.
     """
 
     def __init__(self):
         self.shape = None
         self.columns = None
-        self.type = None
+        self.dtypes = None
 
     def transform(self, X: pd.DataFrame) -> pd.DataFrame:
         logger.info(f"SHAPE : {X.shape}")
         logger.info(f"COLUMNS : {X.columns}")
 
         self.columns = X.columns
-        self.type = X.dtypes
+        self.dtypes = X.dtypes
 
         return X
 
@@ -51,9 +71,23 @@ class DebugTransformer(BaseEstimator, TransformerMixin):
 class DropColumnsTransformer(BaseEstimator, TransformerMixin):
     """
     This class let you remove a column in Sklearn pipeline.
+
+    See Also
+    --------
+    SelectColumnsTransformer : Keep columns from DataFrame.
+    EncoderTransformer :  Drop columns from DataFrame.
+    FunctionTransformer : Use of standard Encoder from sklearn.
+    DebugTransformer : Keep track of information about DataFrame between steps.
     """
 
     def __init__(self, columns_to_drop: List[str] = None):
+        """
+
+        Parameters
+        ----------
+        columns_to_drop : List[str]
+            List of column to drop.
+        """
         self.columns_to_drop = columns_to_drop
 
     def transform(self, X: pd.DataFrame, **transform_params) -> pd.DataFrame:
@@ -66,21 +100,65 @@ class DropColumnsTransformer(BaseEstimator, TransformerMixin):
 
 
 class EncoderTransformer(BaseEstimator, TransformerMixin):
+    """
+    This class let you use standard Encoder from sklearn.
+
+    Attributes
+    ----------
+    encoder :
+        Standard sklearn Encoder. For example, you can provide OneHotEncoder.
+    column : str, Optional
+        Column to transform with the encoder.
+    encoder_args : Dict, Optional
+        Arguments to pass to the sklearn encoder.
+    new_cols_prefix : str, Optional
+        If you provide value, all generated column will have a this value as prefix.
+    is_drop_input_col : bool, Optional, default True
+        the old column will be removed if self.column != new_cols_prefix and is_drop_input_col == True
+        or if self.column == new_cols_prefix
+
+    See Also
+    --------
+    SelectColumnsTransformer : Keep columns from DataFrame.
+    DropColumnsTransformer :  Drop columns from DataFrame.
+    FunctionTransformer : Apply function to a column.
+    DebugTransformer : Keep track of information about DataFrame between steps.
+
+    """
+
     def __init__(
         self,
         encoder,
-        column=None,
-        encoder_args=None,
-        new_cols_prefix=None,
-        is_drop_input_col=True,
+        column: str = None,
+        encoder_args: Dict = None,
+        new_cols_prefix: str = None,
+        is_drop_input_col: bool = True,
     ):
-        if encoder_args is None:
-            encoder_args = {}
+        """
+
+        Parameters
+        ----------
+        encoder :
+            Standard sklearn Encoder. For example, you can provide OneHotEncoder.
+        column : str, Optional
+            Column to transform with the encoder.
+        encoder_args : Dict, Optional
+            Arguments to pass to the sklearn encoder.
+        new_cols_prefix : str, Optional
+            If you provide value, all generated column will have a this value as prefix.
+        is_drop_input_col : bool, Optional, default True
+            the old column will be removed if self.column != new_cols_prefix and is_drop_input_col == True
+            or if self.column == new_cols_prefix
+        """
+        self.encoder_args = encoder_args
+        if self.encoder_args is None:
+            self.encoder_args = {}
 
         self.column = column
-        self.encoder = encoder(**encoder_args)
+        self.encoder = encoder(**self.encoder_args)
         self.new_cols_prefix = new_cols_prefix
         self.is_drop_input_col = is_drop_input_col
+
         if self.new_cols_prefix is None:
             self.new_cols_prefix = f"{self.column}_{self.encoder.__class__.__name__}_"
 
@@ -120,8 +198,36 @@ class EncoderTransformer(BaseEstimator, TransformerMixin):
 
 
 class FunctionTransformer(BaseEstimator):
-    """from
-    https://stackoverflow.com/questions/42844457/scikit-learn-applying-an-arbitary-function-as-part-of-a-pipeline
+    """Apply function Transformer.
+
+    For example, please refer to : https://github.com/nguyenanht/john-toolbox/blob/develop/notebooks/tutorial1%20-%20PandasPipeline%20%26%20PandasTransformer.ipynb
+
+    from https://stackoverflow.com/questions/42844457/scikit-learn-applying-an-arbitary-function-as-part-of-a-pipeline
+
+    Attributes
+    ----------
+    column : str, Optional
+        Column to transform with the encoder.
+    func : Callable
+        Function to apply.
+    dict_args: Dict
+        Arguments to pass to the function.
+    mode : str, Optional, default apply_by_multiprocessing
+        Mode accepted : `apply_by_multiprocessing`, `apply` or `vectorized`
+        `apply_by_multiprocessing`: apply the function by using total_number of cpu minus one
+        `apply`: apply in standard way the function.
+        `vectorized`: vectorise an operation. For example add 2 columns.
+    return_col: str, Optional, default=column
+        Name of the output.
+    drop_input_col: str, default=False
+        Drop the input column.
+
+    See Also
+    --------
+    SelectColumnsTransformer : Keep columns from DataFrame.
+    DropColumnsTransformer :  Drop columns from DataFrame.
+    EncoderTransformer :  Drop columns from DataFrame.
+    DebugTransformer : Keep track of information about DataFrame between steps.
     """
 
     def __init__(
