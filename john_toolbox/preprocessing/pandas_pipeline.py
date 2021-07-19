@@ -33,9 +33,9 @@ class PandasPipeline:
 
         Parameters
         ----------
-        steps : list[tuple[str, john_toolbox.preprocessing.pandas_transformer]
-            List of tuple with name of the step and pandas_transformer.
-
+        steps : List[(name, john_toolbox.preprocessing.pandas_transformer)
+        or List[{"name": name, "transformer": john_toolbox.preprocessing.pandas_transformer}]
+            List of tuple or dict with name of the step and pandas_transformer.
         target_name : str
             Column name of the target.
         verbose :bool
@@ -51,6 +51,9 @@ class PandasPipeline:
         self.target_name = target_name
         self.columns = []
         self._some_target_modality = None
+
+        if isinstance(steps[0], dict):
+            steps = [(elem["name"], elem["transformer"]) for elem in steps]
 
         self.sklearn_pipeline = Pipeline(
             steps=steps,
