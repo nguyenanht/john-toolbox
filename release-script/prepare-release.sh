@@ -22,8 +22,12 @@ git checkout -b release/${version}
 docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry version ${version}
 # Generate docs
 make install docs
+# Change version of project in readme
+sed -e "/version-/{ N; s/version-.*-blue/version-${version}-blue/ }" README.md  > tmp.md
+cat tmp.md > README.md
+rm tmp.md
 # Add modified files
-git add pyproject.toml docs/
+git add pyproject.toml README.md docs/
 # Commit release
 git commit -m "chore: release v${version}"
 # Create tag for changelog generation
