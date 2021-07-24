@@ -1,3 +1,8 @@
+### Features
+
+* add metric eval viz ([94e3244](https://github.com/nguyenanht/john-toolbox/commit/94e32442e985dc4963fbd51549b3be41def031dd))
+
+
 
 ## [0.4.7](https://github.com/nguyenanht/john-toolbox/compare/v0.4.5...v0.4.7) (2021-07-17)
 
