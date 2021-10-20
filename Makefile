@@ -3,7 +3,7 @@ SHELL := $(shell which bash)
 FOLDER=$$(pwd)
 # default shell options
 .SHELLFLAGS = -c
-PORT=8884
+PORT=8885
 .SILENT: ;
 default: help;   # default target
 
@@ -12,6 +12,18 @@ IMAGE_RELEASER_NAME=release-changelog:latest
 DOCKER_NAME = johntoolbox
 DOCKER_NAME_GPU = johntoolboxgpu
 DOCKER_RUN = docker run  --rm  -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c
+
+light-mode-theme: ## Activate light mode theme
+	$(DOCKER_RUN) "poetry run jt -t grade3 -fs 95 -tfs 11 -nfs 115 -cellw 88% -T"
+.PHONY: light-mode-theme
+
+dark-mode-theme: ## Activate dark mode theme
+	$(DOCKER_RUN) "poetry run jt -t monokai -fs 95 -tfs 11 -nfs 115 -cellw 88% -T"
+.PHONY: dark-mode-theme
+
+reset-theme: ## Activate dark mode theme
+	$(DOCKER_RUN) "poetry run jt -r"
+.PHONY: reset-theme
 
 build:
 	echo "Building Dockerfile"

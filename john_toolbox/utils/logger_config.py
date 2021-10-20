@@ -57,9 +57,9 @@ def setup_log_config(is_dev=True):
 
     """
     if is_dev:
-        path = "../john_toolbox/utils/logging_dev.json"
+        path = "/work/john_toolbox/utils/logging_dev.json"
     else:
-        path = ".../john_toolbox/utils/logging.json"
+        path = "/work/john_toolbox/utils/logging.json"
     if os.path.exists(path):
         with open(path, "rt") as f:
             config = json.load(f)

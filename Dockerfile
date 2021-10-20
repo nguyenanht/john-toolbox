@@ -1,4 +1,4 @@
-FROM python:3.7.9-slim-buster
+FROM python:3.8.0-slim-buster
 
 RUN apt update \
     && apt install -y --no-install-recommends \
@@ -8,6 +8,7 @@ RUN apt update \
     libgomp1 \
     g++ \
     gcc \
+    git \
     make \
     libopenblas-dev \
     python3-tk \
@@ -17,6 +18,7 @@ RUN apt update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+
 ENV SHELL /bin/bash
 
 ENV POETRY_CACHE /work/.cache/poetry
@@ -31,6 +33,4 @@ RUN $HOME/.poetry/bin/poetry config virtualenvs.path $POETRY_CACHE
 
 ENV PATH /root/.poetry/bin:/bin:/usr/local/bin:/usr/bin
 
-
 CMD ["bash", "-l"]
-# ENTRYPOINT ["poetry", "shell"]
