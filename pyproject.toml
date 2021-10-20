@@ -14,11 +14,12 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7.9"
+python = "^3.8.0"
 pandas = "^1.1"
 numpy = "^1.19"
 tqdm = "^4.51"
 importlib-metadata = "^3.8.0"
+jupyterthemes = "^0.20.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
