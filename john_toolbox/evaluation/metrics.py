@@ -24,7 +24,8 @@ def get_optimal_threshold(
     metric_name : str
         Value between `roc_curve`, `prauc_curve`
     metric_func : Callable
-        Function that
+        Function that returns a score like f1_score. the function must have argument in the following order:
+        y_true, y_prob
     is_maximize : bool
 
     Returns
