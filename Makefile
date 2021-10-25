@@ -129,3 +129,7 @@ build-releaser: ## Build docker image for releaser
 	echo "Building Dockerfile"
 	docker build -f ./release-script/Dockerfile_changelog -t ${IMAGE_RELEASER_NAME} .
 .PHONY: build-release
+
+chown: ## Give rights to src and notebook
+	sudo chown -R $$(whoami) notebooks john_toolbox tests data
+	echo "right added to notebooks john_toolbox tests data directories"
