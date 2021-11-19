@@ -7,6 +7,7 @@ PORT=8885
 .SILENT: ;
 default: help;   # default target
 
+
 IMAGE_NAME=john-toolbox:latest
 IMAGE_RELEASER_NAME=release-changelog:latest
 DOCKER_NAME = johntoolbox
@@ -30,13 +31,14 @@ build:
 	docker build -t ${IMAGE_NAME} .
 .PHONY: build
 
-install: build ## First time: Build image, and install all the dependencies, including jupyter
+install: build## First time: Build image, and install all the dependencies, including jupyter
 	echo "Installing dependencies"
-	docker run --rm     -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c 'poetry install'
+	docker run --rm -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c 'poetry install'
 	echo "Activating notebook extension"
 	make up-notebook-extension
 	echo "Changing current folder rights"
 	sudo chmod -R 777 .cache
+	make env
 .PHONY: install
 
 build-gpu:
@@ -51,6 +53,7 @@ install-gpu: build-gpu ## First time: Build image gpu, and install all the depen
 	make up-notebook-extension
 	echo "Changing current folder rights"
 	sudo chmod -R 777 .cache
+	make env
 .PHONY: install-gpu
 
 up-notebook-extension: ## Activate useful notebook extensions
@@ -133,3 +136,8 @@ build-releaser: ## Build docker image for releaser
 chown: ## Give rights to src and notebook
 	sudo chown -R $$(whoami) notebooks john_toolbox tests data
 	echo "right added to notebooks john_toolbox tests data directories"
+
+env: ## Create .env file
+	if [ ! -f .env  ]; then  cp .env.dist .env ; fi
+.PHONY: env
+

@@ -10,5 +10,5 @@ __version__ = importlib_metadata.version(__name__)
 import logging
 from john_toolbox.utils.logger_config import setup_log_config
 
-setup_log_config(is_dev=True)
+setup_log_config(is_dev=False)
 LOGGER = logging.getLogger(__name__)
