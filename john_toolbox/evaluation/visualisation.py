@@ -14,8 +14,19 @@ import pandas as pd
 sns.set_style("darkgrid")
 
 
-def plot_curves(y_test, model_probs):
-    # plot no skill and model precision-recall curves
+def plot_auc_curves(y_test, model_probs):
+    """Plot no skill, model precision-recall curves and roc auc curves
+
+    Parameters
+    ----------
+    y_test :
+    model_probs :
+
+    Returns
+    -------
+
+    """
+
     # calculate the precision-recall auc
     precision, recall, _ = precision_recall_curve(y_test, model_probs)
     fpr, tpr, _ = roc_curve(y_test, model_probs)
