@@ -67,7 +67,7 @@ def get_optimal_threshold(
         J = tpr - fpr
         ix = np.argmax(J)
         best_thresh = thresholds[ix]
-        print(f"Best Threshold to maximize={best_thresh:f}")
+        print(f"Best Threshold to maximize roc_curve={best_thresh:f}")
 
     elif metric_name == "prauc_curve":
         # Unlike the ROC Curve, a precision-recall curve focuses on the
