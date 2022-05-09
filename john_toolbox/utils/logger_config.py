@@ -8,7 +8,7 @@ import os
 import json
 
 
-def setup_log_config(is_dev=True):
+def setup_log_config(is_dev=False):
     """Setup logging configuration.
 
     Parameters
