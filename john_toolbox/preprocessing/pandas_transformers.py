@@ -167,11 +167,10 @@ class EncoderTransformer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X: pd.DataFrame, **transform_params) -> pd.DataFrame:
+        logger.debug(f"name encoder : {self.encoder.__class__.__name__}")
         copy_df = X.copy()
 
-        encoder_result = self.encoder.transform(
-            copy_df[self.column].to_numpy().reshape(-1, 1)
-        )
+        encoder_result = self.encoder.transform(copy_df[self.column].to_numpy().reshape(-1, 1))
         if issparse(encoder_result):
             encoder_result = encoder_result.toarray()
 
@@ -183,9 +182,12 @@ class EncoderTransformer(BaseEstimator, TransformerMixin):
             new_cols_size = 1
 
         try:
-            new_cols = self.encoder.get_feature_names([self.column])  # one hot encoding
-            # new_cols = self.encoder.get_feature_names()  # one hot encoding
-            new_cols = [f"{self.new_cols_prefix}_{col}" for col in new_cols]
+            new_cols = self.encoder.get_feature_names_out([self.column])
+
+            if len(new_cols) > 1:
+                # usefull only in case encoder create multiple columns like one hot encoding
+                new_cols = [f"{self.new_cols_prefix}_{col}" for col in new_cols]
+            logger.debug(f"new_cols = {new_cols}")
 
         except AttributeError:
             new_cols = (
@@ -193,6 +195,7 @@ class EncoderTransformer(BaseEstimator, TransformerMixin):
                 if new_cols_size > 1
                 else [self.new_cols_prefix]
             )
+            logger.debug(f"new_cols = {new_cols}")
 
         encoder_result_df = pd.DataFrame(data=encoder_result, columns=new_cols)
         encoder_result_df.index = copy_df.index
