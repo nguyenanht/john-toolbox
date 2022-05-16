@@ -10,6 +10,9 @@ from sklearn.metrics import (
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import logging
+
+logger = logging.getLogger(__name__)
 
 sns.set_style("darkgrid")
 
@@ -65,13 +68,7 @@ def plot_classification_report(y_true, y_pred, size=(5, 5), ax=None):
     rep = np.insert(rep, rep.shape[0], avg, axis=0)
 
     sns.heatmap(
-        rep,
-        annot=True,
-        cbar=False,
-        xticklabels=xticks,
-        yticklabels=yticks,
-        ax=ax,
-        fmt="g",
+        rep, annot=True, cbar=False, xticklabels=xticks, yticklabels=yticks, ax=ax, fmt="g",
     ).set_title(f"Accuracy score : {round(accuracy_score(y_true, y_pred), 4)}")
 
 
