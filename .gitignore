@@ -380,3 +380,4 @@ modules.xml
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm+all,vscode,django,jetbrains+all
 
 .env
+.Trash-0/
