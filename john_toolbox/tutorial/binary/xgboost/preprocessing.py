@@ -20,6 +20,12 @@ def fillna_value(X, column, value):
     return X[column].fillna(value)
 
 
+def extract_X_y(df, target_name):
+    X = df[[col for col in df.columns if col != target_name]]
+    y = df[[target_name]]
+    return X, y
+
+
 COL_TO_KEEP = [
     "PassengerId",
     "Survived",
@@ -35,10 +41,7 @@ COL_TO_KEEP = [
 # ----------- PIPELINE PREPROCESSING --------------
 # 1. Select the appropriate columns and cast to good format.
 conformity_column_list = [
-    {
-        "name": "DROP columns",
-        "transformer": SelectColumnsTransformer(columns=COL_TO_KEEP),
-    },
+    {"name": "DROP columns", "transformer": SelectColumnsTransformer(columns=COL_TO_KEEP),},
 ]
 
 for col_to_cast in ["Embarked", "Sex", "Cabin"]:
@@ -106,10 +109,7 @@ encoder_list = [
         "transformer": EncoderTransformer(
             encoder=OrdinalEncoder,
             column="Cabin",
-            encoder_args={
-                "handle_unknown": "use_encoded_value",
-                "unknown_value": -1,
-            },
+            encoder_args={"handle_unknown": "use_encoded_value", "unknown_value": -1,},
             new_cols_prefix="Cabin",
             is_drop_input_col=True,
         ),
