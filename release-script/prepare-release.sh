@@ -26,8 +26,16 @@ make install docs
 sed -e "/version-/{ N; s/version-.*-blue/version-${version}-blue/ }" README.md  > tmp.md
 cat tmp.md > README.md
 rm tmp.md
+# change version of __init__.py
+old_version="`grep __version__ john_toolbox/__init__.py | cut -d\   -f3`"
+old_version=`echo "$old_version" | cut -d'"' -f 2`
+new_version=${version}
+sed -e "s/${old_version}/${new_version}/g" john_toolbox/__init__.py > john_toolbox/__init__tmp.py
+cat john_toolbox/__init__tmp.py > john_toolbox/__init__.py
+rm john_toolbox/__init__tmp.py
+
 # Add modified files
-git add pyproject.toml README.md docs/
+git add pyproject.toml README.md john_toolbox/__init__.py docs/
 # Commit release
 git commit -m "chore: release v${version}"
 # Create tag for changelog generation
