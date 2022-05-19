@@ -52,7 +52,7 @@ requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 [tool.poetry-version-plugin]
-source = "init"
+source = "init" # https://github.com/tiangolo/poetry-version-plugin
 
 [tool.pytest.ini_options]
 filterwarnings = [
