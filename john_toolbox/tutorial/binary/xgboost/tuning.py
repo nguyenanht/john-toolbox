@@ -7,12 +7,8 @@ hyperparameters.
 from https://github.com/optuna/optuna-examples/blob/main/xgboost/xgboost_simple.py
 """
 
-import numpy as np
+import pprint
 import optuna
-
-import sklearn.datasets
-import sklearn.metrics
-from sklearn.model_selection import train_test_split
 from xgboost import XGBClassifier
 import logging
 
@@ -25,6 +21,7 @@ def objective_xgb(trial, X_train, X_valid, y_train, y_valid):
     param = {
         "verbosity": 0,
         "objective": "binary:logistic",
+        "n_estimators": 1000,
         # use exact for small dataset.
         "tree_method": "exact",
         # defines booster, gblinear for linear functions.
@@ -55,12 +52,12 @@ def objective_xgb(trial, X_train, X_valid, y_train, y_valid):
         param["rate_drop"] = trial.suggest_float("rate_drop", 1e-8, 1.0, log=True)
         param["skip_drop"] = trial.suggest_float("skip_drop", 1e-8, 1.0, log=True)
 
-    xgb = XGBClassifier(**params)
+    xgb = XGBClassifier(**param)
 
     xgb.fit(
         X_train,
         y_train.to_numpy().reshape(-1),
-        early_stopping_rounds=30,
+        early_stopping_rounds=50,
         eval_set=[
             (X_train, y_train.to_numpy().reshape(-1)),
             (X_valid, y_valid.to_numpy().reshape(-1)),
@@ -69,28 +66,34 @@ def objective_xgb(trial, X_train, X_valid, y_train, y_valid):
         verbose=True,
     )
 
-    bst = xgb.train(param, dtrain)
-    preds = bst.predict(dvalid)
-    pred_labels = np.rint(preds)
-    accuracy = sklearn.metrics.accuracy_score(valid_y, pred_labels)
-    return accuracy
+    results = xgb.evals_result()
+    best_iteration = xgb.best_iteration
+    print(f"Best Iteration: {best_iteration}")
+    res = {
+        eval_name: {key: val[xgb.best_iteration] for key, val in values.items()}
+        for eval_name, values in results.items()
+    }
+    logger.info(res)
+
+    # accuracy = sklearn.metrics.accuracy_score(valid_y, pred_labels)
+    auc = res["validation_1"]["auc"]
+
+    return auc
 
 
 def optimize_hyperparameter(X_train, X_valid, y_train, y_valid, n_trials=50, timeout=None):
     study = optuna.create_study(direction="maximize")
     study.optimize(
-        objective=lambda trial: objective_xgb(
+        func=lambda trial: objective_xgb(
             trial=trial, X_train=X_train, X_valid=X_valid, y_train=y_train, y_valid=y_valid
         ),
         n_trials=n_trials,
         timeout=timeout,
     )
 
-    logger.info("Number of finished trials: ", len(study.trials))
+    logger.info(f"Number of finished trials: {len(study.trials)}")
     trial = study.best_trial
 
     logger.info(f"Best trial value: {trial.value}")
-    print("  Params: ")
-    for key, value in trial.params.items():
-        print("    {}: {}".format(key, value))
+    pprint.pprint(trial.params)
     return trial
