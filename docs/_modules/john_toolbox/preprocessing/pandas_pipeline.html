@@ -187,9 +187,9 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        steps : list[tuple[str, john_toolbox.preprocessing.pandas_transformer]</span>
-<span class="sd">            List of tuple with name of the step and pandas_transformer.</span>
-
+<span class="sd">        steps : List[(name, john_toolbox.preprocessing.pandas_transformer)</span>
+<span class="sd">        or List[{&quot;name&quot;: name, &quot;transformer&quot;: john_toolbox.preprocessing.pandas_transformer}]</span>
+<span class="sd">            List of tuple or dict with name of the step and pandas_transformer.</span>
 <span class="sd">        target_name : str</span>
 <span class="sd">            Column name of the target.</span>
 <span class="sd">        verbose :bool</span>
@@ -205,6 +205,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">target_name</span> <span class="o">=</span> <span class="n">target_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_some_target_modality</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">steps</span> <span class="o">=</span> <span class="p">[(</span><span class="n">elem</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">elem</span><span class="p">[</span><span class="s2">&quot;transformer&quot;</span><span class="p">])</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sklearn_pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
             <span class="n">steps</span><span class="o">=</span><span class="n">steps</span><span class="p">,</span>

@@ -175,13 +175,16 @@
 <h1>john_toolbox.utils.logger_config.setup_log_config<a class="headerlink" href="#john-toolbox-utils-logger-config-setup-log-config" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="john_toolbox.utils.logger_config.setup_log_config">
-<code class="sig-prename descclassname"><span class="pre">john_toolbox.utils.logger_config.</span></code><code class="sig-name descname"><span class="pre">setup_log_config</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/john_toolbox/utils/logger_config.html#setup_log_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#john_toolbox.utils.logger_config.setup_log_config" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">john_toolbox.utils.logger_config.</span></code><code class="sig-name descname"><span class="pre">setup_log_config</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/john_toolbox/utils/logger_config.html#setup_log_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#john_toolbox.utils.logger_config.setup_log_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Setup logging configuration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>is_dev</strong> (<em>boolean</em>) – if True, the dev configuration log file is used (more readable for developers)
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>is_dev</strong> (<em>boolean</em>) – if True, the dev configuration log file is used (more readable for developers)
 you can activate the dev mode passing ‘True’ to ENGINE_LOGS_DEV into
-the ‘engine-service.yml’ from brain_docker</p>
+the ‘engine-service.yml’ from brain_docker</p></li>
+<li><p><strong>level</strong> (<em>str</em><em>, </em><em>default=None</em>) – parameters to override</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
