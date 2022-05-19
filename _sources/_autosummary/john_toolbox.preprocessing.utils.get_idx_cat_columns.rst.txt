@@ -1,0 +1,6 @@
+john\_toolbox.preprocessing.utils.get\_idx\_cat\_columns
+========================================================
+
+.. currentmodule:: john_toolbox.preprocessing.utils
+
+.. autofunction:: get_idx_cat_columns

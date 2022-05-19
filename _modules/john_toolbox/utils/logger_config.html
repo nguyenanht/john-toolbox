@@ -161,45 +161,17 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="c1">#</span>
-<span class="c1"># FORMATTER = logging.Formatter(</span>
-<span class="c1">#     &quot;%(levelname)s - %(asctime)s|%(name)s - %(funcName)s:%(lineno)d — %(message)s&quot;,</span>
-<span class="c1">#     &quot;%H:%M:%S&quot;,</span>
-<span class="c1"># )</span>
-<span class="c1">#</span>
-<span class="c1"># PACKAGE_ROOT = pathlib.Path(__file__).resolve().parent.parent</span>
-<span class="c1">#</span>
-<span class="c1"># loggers = {}</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1"># def get_console_handler():</span>
-<span class="c1">#     console_handler = logging.StreamHandler(sys.stdout)</span>
-<span class="c1">#     console_handler.setFormatter(FORMATTER)</span>
-<span class="c1">#     return console_handler</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
-<span class="c1"># def get_logger(*, logger_name):</span>
-<span class="c1">#     &quot;&quot;&quot;Get logger with prepared handlers.&quot;&quot;&quot;</span>
-<span class="c1">#     global loggers</span>
-<span class="c1">#</span>
-<span class="c1">#     if loggers.get(logger_name):</span>
-<span class="c1">#         return loggers.get(logger_name)</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         logger = logging.getLogger(logger_name)</span>
-<span class="c1">#</span>
-<span class="c1">#         # logger.setLevel(logging.INFO)</span>
-<span class="c1">#         logger.setLevel(logging.INFO)</span>
-<span class="c1">#         if logger.hasHandlers():</span>
-<span class="c1">#             logger.handlers.clear()</span>
-<span class="c1">#</span>
-<span class="c1">#         logger.addHandler(get_console_handler())</span>
-<span class="c1">#         logger.propagate = False</span>
-<span class="c1">#         loggers[logger_name] = logger</span>
-<span class="c1">#</span>
-<span class="c1">#     return loggers[logger_name]</span>
+
+<span class="n">ACCEPTED_LEVEL_MODE</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;INFO&quot;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+    <span class="s2">&quot;DEBUG&quot;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
+    <span class="s2">&quot;CRITICAL&quot;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">,</span>
+    <span class="s2">&quot;WARNING&quot;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
+    <span class="s2">&quot;ERROR&quot;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
+<span class="p">}</span>
 
 
-<div class="viewcode-block" id="setup_log_config"><a class="viewcode-back" href="../../../_autosummary/john_toolbox.utils.logger_config.setup_log_config.html#john_toolbox.utils.logger_config.setup_log_config">[docs]</a><span class="k">def</span> <span class="nf">setup_log_config</span><span class="p">(</span><span class="n">is_dev</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_log_config"><a class="viewcode-back" href="../../../_autosummary/john_toolbox.utils.logger_config.setup_log_config.html#john_toolbox.utils.logger_config.setup_log_config">[docs]</a><span class="k">def</span> <span class="nf">setup_log_config</span><span class="p">(</span><span class="n">is_dev</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Setup logging configuration.</span>
 
 <span class="sd">    Parameters</span>
@@ -208,19 +180,39 @@
 <span class="sd">        if True, the dev configuration log file is used (more readable for developers)</span>
 <span class="sd">        you can activate the dev mode passing &#39;True&#39; to ENGINE_LOGS_DEV into</span>
 <span class="sd">        the &#39;engine-service.yml&#39; from brain_docker</span>
+<span class="sd">    level: str, default=None</span>
+<span class="sd">        parameters to override</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">is_dev</span><span class="p">:</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;../john_toolbox/utils/logging_dev.json&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/work/john_toolbox/utils/logging_dev.json&quot;</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;.../john_toolbox/utils/logging.json&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/work/john_toolbox/utils/logging.json&quot;</span>
     <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">level</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="n">ACCEPTED_LEVEL_MODE</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+
+                <span class="n">config</span><span class="p">[</span><span class="s2">&quot;root&quot;</span><span class="p">][</span><span class="s2">&quot;level&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">level</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="n">config</span><span class="p">[</span><span class="s2">&quot;handlers&quot;</span><span class="p">][</span><span class="s2">&quot;console&quot;</span><span class="p">][</span><span class="s2">&quot;level&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">level</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;level logging = </span><span class="si">{</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;root&#39;</span><span class="p">][</span><span class="s1">&#39;level&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">logging</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dictConfig</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">custom_level</span> <span class="o">=</span> <span class="n">ACCEPTED_LEVEL_MODE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">level</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">custom_level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">custom_level</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;level logging = </span><span class="si">{</span><span class="n">level</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;level logging = INFO&quot;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;level logging = INFO&quot;</span><span class="p">)</span>
     <span class="k">return</span></div>
 </pre></div>
 
