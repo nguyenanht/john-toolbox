@@ -21,7 +21,7 @@ tqdm = "^4.51"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
-jupyterlab = "^3.0.12"
+jupyterlab = "^3.4.2"
 jupyter = "^1.0.0"
 jupytext = "^1.11.1"
 jupyter-contrib-nbextensions = "^0.5.1"
