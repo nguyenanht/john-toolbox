@@ -1,7 +1,7 @@
 from typing import Callable, Dict, List
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
-
+from scipy.sparse import issparse
 from john_toolbox.preprocessing.utils import compute_in_parallel
 
 import logging
@@ -167,24 +167,37 @@ class EncoderTransformer(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X: pd.DataFrame, **transform_params) -> pd.DataFrame:
+        logger.debug(f"name encoder : {self.encoder.__class__.__name__}")
         copy_df = X.copy()
-        encoder_result_array = self.encoder.transform(
-            copy_df[self.column].to_numpy().reshape(-1, 1)
-        ).toarray()
-        logger.debug(f"SHAPE encoder_result_array : {encoder_result_array.shape}")
 
-        new_cols_size = encoder_result_array.shape[1]
+        encoder_result = self.encoder.transform(copy_df[self.column].to_numpy().reshape(-1, 1))
+        if issparse(encoder_result):
+            encoder_result = encoder_result.toarray()
+
+        logger.debug(f"SHAPE encoder_result_array : {encoder_result.shape}")
+
+        if len(encoder_result.shape) >= 2:
+            new_cols_size = encoder_result.shape[1]
+        else:
+            new_cols_size = 1
 
         try:
-            new_cols = self.encoder.get_feature_names()  # one hot encoding
+            new_cols = self.encoder.get_feature_names_out([self.column])
+
+            if len(new_cols) > 1:
+                # usefull only in case encoder create multiple columns like one hot encoding
+                new_cols = [f"{self.new_cols_prefix}_{col}" for col in new_cols]
+            logger.debug(f"new_cols = {new_cols}")
+
         except AttributeError:
             new_cols = (
                 [f"{self.new_cols_prefix}_{idx}" for idx in range(new_cols_size)]
                 if new_cols_size > 1
                 else [self.new_cols_prefix]
             )
+            logger.debug(f"new_cols = {new_cols}")
 
-        encoder_result_df = pd.DataFrame(data=encoder_result_array, columns=new_cols)
+        encoder_result_df = pd.DataFrame(data=encoder_result, columns=new_cols)
         encoder_result_df.index = copy_df.index
 
         if (self.column != self.new_cols_prefix and self.is_drop_input_col) or (

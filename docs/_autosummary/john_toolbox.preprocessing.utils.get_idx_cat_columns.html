@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>john_toolbox.preprocessing.utils.get_idx_cat_columns &mdash; PLUS-ULTRA  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/./default.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="john_toolbox.utils" href="john_toolbox.utils.html" />
+    <link rel="prev" title="john_toolbox.preprocessing.utils.compute_in_parallel" href="john_toolbox.preprocessing.utils.compute_in_parallel.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PLUS-ULTRA
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="john_toolbox.html">john_toolbox</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="john_toolbox.preprocessing.html">john_toolbox.preprocessing</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="john_toolbox.preprocessing.pandas_pipeline.html">john_toolbox.preprocessing.pandas_pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="john_toolbox.preprocessing.pandas_transformers.html">john_toolbox.preprocessing.pandas_transformers</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="john_toolbox.preprocessing.utils.html">john_toolbox.preprocessing.utils</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="john_toolbox.preprocessing.utils.compute_in_parallel.html">john_toolbox.preprocessing.utils.compute_in_parallel</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">john_toolbox.preprocessing.utils.get_idx_cat_columns</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="john_toolbox.utils.html">john_toolbox.utils</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PLUS-ULTRA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="john_toolbox.html">john_toolbox</a> &raquo;</li>
+        
+          <li><a href="john_toolbox.preprocessing.html">john_toolbox.preprocessing</a> &raquo;</li>
+        
+          <li><a href="john_toolbox.preprocessing.utils.html">john_toolbox.preprocessing.utils</a> &raquo;</li>
+        
+      <li>john_toolbox.preprocessing.utils.get_idx_cat_columns</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/_autosummary/john_toolbox.preprocessing.utils.get_idx_cat_columns.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="john-toolbox-preprocessing-utils-get-idx-cat-columns">
+<h1>john_toolbox.preprocessing.utils.get_idx_cat_columns<a class="headerlink" href="#john-toolbox-preprocessing-utils-get-idx-cat-columns" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt id="john_toolbox.preprocessing.utils.get_idx_cat_columns">
+<code class="sig-prename descclassname"><span class="pre">john_toolbox.preprocessing.utils.</span></code><code class="sig-name descname"><span class="pre">get_idx_cat_columns</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_modality_cat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/john_toolbox/preprocessing/utils.html#get_idx_cat_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#john_toolbox.preprocessing.utils.get_idx_cat_columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="john_toolbox.utils.html" class="btn btn-neutral float-right" title="john_toolbox.utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="john_toolbox.preprocessing.utils.compute_in_parallel.html" class="btn btn-neutral float-left" title="john_toolbox.preprocessing.utils.compute_in_parallel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, johnathan nguyen.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

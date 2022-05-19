@@ -7,45 +7,17 @@ import logging.config
 import os
 import json
 
-#
-# FORMATTER = logging.Formatter(
-#     "%(levelname)s - %(asctime)s|%(name)s - %(funcName)s:%(lineno)d — %(message)s",
-#     "%H:%M:%S",
-# )
-#
-# PACKAGE_ROOT = pathlib.Path(__file__).resolve().parent.parent
-#
-# loggers = {}
-#
-#
-# def get_console_handler():
-#     console_handler = logging.StreamHandler(sys.stdout)
-#     console_handler.setFormatter(FORMATTER)
-#     return console_handler
-#
-#
-# def get_logger(*, logger_name):
-#     """Get logger with prepared handlers."""
-#     global loggers
-#
-#     if loggers.get(logger_name):
-#         return loggers.get(logger_name)
-#     else:
-#         logger = logging.getLogger(logger_name)
-#
-#         # logger.setLevel(logging.INFO)
-#         logger.setLevel(logging.INFO)
-#         if logger.hasHandlers():
-#             logger.handlers.clear()
-#
-#         logger.addHandler(get_console_handler())
-#         logger.propagate = False
-#         loggers[logger_name] = logger
-#
-#     return loggers[logger_name]
+
+ACCEPTED_LEVEL_MODE = {
+    "INFO": logging.INFO,
+    "DEBUG": logging.DEBUG,
+    "CRITICAL": logging.CRITICAL,
+    "WARNING": logging.WARNING,
+    "ERROR": logging.ERROR,
+}
 
 
-def setup_log_config(is_dev=True):
+def setup_log_config(is_dev=False, level=None):
     """Setup logging configuration.
 
     Parameters
@@ -54,17 +26,37 @@ def setup_log_config(is_dev=True):
         if True, the dev configuration log file is used (more readable for developers)
         you can activate the dev mode passing 'True' to ENGINE_LOGS_DEV into
         the 'engine-service.yml' from brain_docker
+    level: str, default=None
+        parameters to override
 
     """
     if is_dev:
-        path = "../john_toolbox/utils/logging_dev.json"
+        path = "/work/john_toolbox/utils/logging_dev.json"
     else:
-        path = ".../john_toolbox/utils/logging.json"
+        path = "/work/john_toolbox/utils/logging.json"
     if os.path.exists(path):
         with open(path, "rt") as f:
             config = json.load(f)
+
+        if level is not None:
+            if level.upper() in ACCEPTED_LEVEL_MODE.keys():
+
+                config["root"]["level"] = level.upper()
+                config["handlers"]["console"]["level"] = level.upper()
+        print(f"level logging = {config['root']['level']}")
         logging.config.dictConfig(config)
     else:
-        logging.basicConfig(level=logging.INFO)
 
+        if level is not None:
+            custom_level = ACCEPTED_LEVEL_MODE.get(level.upper())
+            if custom_level is not None:
+                logging.basicConfig(level=custom_level)
+                print(f"level logging = {level.upper()}")
+            else:
+                logging.basicConfig(level=logging.INFO)
+                print(f"level logging = INFO")
+
+        else:
+            logging.basicConfig(level=logging.INFO)
+            print(f"level logging = INFO")
     return

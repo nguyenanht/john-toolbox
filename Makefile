@@ -3,9 +3,10 @@ SHELL := $(shell which bash)
 FOLDER=$$(pwd)
 # default shell options
 .SHELLFLAGS = -c
-PORT=8884
+PORT=8885
 .SILENT: ;
 default: help;   # default target
+
 
 IMAGE_NAME=john-toolbox:latest
 IMAGE_RELEASER_NAME=release-changelog:latest
@@ -13,18 +14,31 @@ DOCKER_NAME = johntoolbox
 DOCKER_NAME_GPU = johntoolboxgpu
 DOCKER_RUN = docker run  --rm  -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c
 
+light-mode-theme: ## Activate light mode theme
+	$(DOCKER_RUN) "poetry run jt -t grade3 -fs 95 -tfs 11 -nfs 115 -cellw 88% -T"
+.PHONY: light-mode-theme
+
+dark-mode-theme: ## Activate dark mode theme
+	$(DOCKER_RUN) "poetry run jt -t monokai -fs 95 -tfs 11 -nfs 115 -cellw 88% -T"
+.PHONY: dark-mode-theme
+
+reset-theme: ## Activate dark mode theme
+	$(DOCKER_RUN) "poetry run jt -r"
+.PHONY: reset-theme
+
 build:
 	echo "Building Dockerfile"
 	docker build -t ${IMAGE_NAME} .
 .PHONY: build
 
-install: build ## First time: Build image, and install all the dependencies, including jupyter
+install: build## First time: Build image, and install all the dependencies, including jupyter
 	echo "Installing dependencies"
-	docker run --rm     -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c 'poetry install'
+	docker run --rm -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c 'poetry install'
 	echo "Activating notebook extension"
 	make up-notebook-extension
 	echo "Changing current folder rights"
 	sudo chmod -R 777 .cache
+	make env
 .PHONY: install
 
 build-gpu:
@@ -39,6 +53,7 @@ install-gpu: build-gpu ## First time: Build image gpu, and install all the depen
 	make up-notebook-extension
 	echo "Changing current folder rights"
 	sudo chmod -R 777 .cache
+	make env
 .PHONY: install-gpu
 
 up-notebook-extension: ## Activate useful notebook extensions
@@ -46,14 +61,28 @@ up-notebook-extension: ## Activate useful notebook extensions
 	$(DOCKER_RUN) "poetry run jupyter nbextension enable autosavetime/main --sys-prefix && poetry run jupyter nbextension enable tree-filter/index --sys-prefix && poetry run jupyter nbextension enable splitcell/splitcell --sys-prefix && poetry run jupyter nbextension enable toc2/main --sys-prefix && poetry run jupyter nbextension enable toggle_all_line_numbers/main --sys-prefix && poetry run jupyter nbextension enable cell_filter/cell_filter --sys-prefix && poetry run jupyter nbextension enable code_prettify/autopep8 --sys-prefix"
 .PHONY: up-notebook-extension
 
+create-history:
+	touch docker_history/.container_bash_history
+.PHONY: create-history
+
 start: ## To get inside the container (can launch "poetry shell" from inside or "poetry add <package>")
+	make create-history
 	echo "Starting container ${IMAGE_NAME}"
-	docker run --name $(DOCKER_NAME) --rm -it -v ${FOLDER}:/work -w /work -p ${PORT}:${PORT} -e "JUPYTER_PORT=${PORT}" ${IMAGE_NAME}
+	docker run --name $(DOCKER_NAME) --rm -it \
+	-v ${FOLDER}:/work \
+	-v $$(pwd)/docker_history/.container_bash_history:/root/.bash_history \
+	-w /work -p ${PORT}:${PORT} \
+	-e "JUPYTER_PORT=${PORT}" ${IMAGE_NAME}
 .PHONY: start
 
 start-gpu: ## To get inside the gpu container (can launch "poetry shell" from inside or "poetry add <package>")
+	make create-history
 	echo "Starting container ${IMAGE_NAME}"
-	docker run --name $(DOCKER_NAME_GPU) --gpus all --rm -it -v ${FOLDER}:/work -w /work -p ${PORT}:${PORT} -e "JUPYTER_PORT=${PORT}" ${IMAGE_NAME}
+	docker run --name $(DOCKER_NAME_GPU) --gpus all --rm -it \
+	-v ${FOLDER}:/work \
+	-v $$(pwd)/docker_history/.container_bash_history:/root/.bash_history \
+	-w /work -p ${PORT}:${PORT} \
+	-e "JUPYTER_PORT=${PORT}" ${IMAGE_NAME}
 .PHONY: start-gpu
 
 notebook: ## Start the Jupyter notebook (must be run from inside the container)
@@ -117,3 +146,12 @@ build-releaser: ## Build docker image for releaser
 	echo "Building Dockerfile"
 	docker build -f ./release-script/Dockerfile_changelog -t ${IMAGE_RELEASER_NAME} .
 .PHONY: build-release
+
+chown: ## Give rights to src and notebook
+	sudo chown -R $$(whoami) notebooks john_toolbox tests data
+	echo "right added to notebooks john_toolbox tests data directories"
+
+env: ## Create .env file
+	if [ ! -f .env  ]; then  cp .env.dist .env ; fi
+.PHONY: env
+

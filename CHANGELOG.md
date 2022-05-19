@@ -1,4 +1,26 @@
 
+# [0.5.0](https://github.com/nguyenanht/john-toolbox/compare/v0.4.9...v0.5.0) (2022-05-19)
+
+
+### Bug Fixes
+
+* notebook with new version packages ([b01a63a](https://github.com/nguyenanht/john-toolbox/commit/b01a63a0584b4e1574c4030a1c96c3b023daeb92))
+* update deps ([0903e49](https://github.com/nguyenanht/john-toolbox/commit/0903e49bded37a015af86b70e8ec8cc289194558))
+
+
+### Features
+
+* add find best threshold ([d879685](https://github.com/nguyenanht/john-toolbox/commit/d879685bb3a823e659659d0e24682bc8b843b3cc))
+* add fit all history titanic with xgb ([47e3710](https://github.com/nguyenanht/john-toolbox/commit/47e37100ec128911154da3035e1158c76795ab43))
+* add make chown command to makefile ([e49cd17](https://github.com/nguyenanht/john-toolbox/commit/e49cd17e9f69b5d3774219bf1be0f0c49704b93e))
+* add make env command to makefile ([ee378a4](https://github.com/nguyenanht/john-toolbox/commit/ee378a4097453d2dbeea951b772cf58c18068972))
+* add metric eval viz ([d0103c6](https://github.com/nguyenanht/john-toolbox/commit/d0103c647723f24a7707da292ae4449230044a9f))
+* add optuna package ([8a1be96](https://github.com/nguyenanht/john-toolbox/commit/8a1be964bd07d00a4af617e65f24aa44ed9a0e18))
+* rework tutorial end to end boosting ([cd7e07d](https://github.com/nguyenanht/john-toolbox/commit/cd7e07dc69d04235701005f5150a055535fa6632))
+* test the package with titanic dataset ([8c2d592](https://github.com/nguyenanht/john-toolbox/commit/8c2d59254282ba3328c95e2e1ffc363baae1f50d))
+
+
+
 ## [0.4.9](https://github.com/nguyenanht/john-toolbox/compare/v0.4.8...v0.4.9) (2021-07-24)
 
 
