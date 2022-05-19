@@ -381,3 +381,5 @@ modules.xml
 
 .env
 .Trash-0/
+
+docker_history/

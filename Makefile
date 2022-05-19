@@ -61,14 +61,28 @@ up-notebook-extension: ## Activate useful notebook extensions
 	$(DOCKER_RUN) "poetry run jupyter nbextension enable autosavetime/main --sys-prefix && poetry run jupyter nbextension enable tree-filter/index --sys-prefix && poetry run jupyter nbextension enable splitcell/splitcell --sys-prefix && poetry run jupyter nbextension enable toc2/main --sys-prefix && poetry run jupyter nbextension enable toggle_all_line_numbers/main --sys-prefix && poetry run jupyter nbextension enable cell_filter/cell_filter --sys-prefix && poetry run jupyter nbextension enable code_prettify/autopep8 --sys-prefix"
 .PHONY: up-notebook-extension
 
+create-history:
+	touch docker_history/.container_bash_history
+.PHONY: create-history
+
 start: ## To get inside the container (can launch "poetry shell" from inside or "poetry add <package>")
+	make create-history
 	echo "Starting container ${IMAGE_NAME}"
-	docker run --name $(DOCKER_NAME) --rm -it -v ${FOLDER}:/work -w /work -p ${PORT}:${PORT} -e "JUPYTER_PORT=${PORT}" ${IMAGE_NAME}
+	docker run --name $(DOCKER_NAME) --rm -it \
+	-v ${FOLDER}:/work \
+	-v $$(pwd)/docker_history/.container_bash_history:/root/.bash_history \
+	-w /work -p ${PORT}:${PORT} \
+	-e "JUPYTER_PORT=${PORT}" ${IMAGE_NAME}
 .PHONY: start
 
 start-gpu: ## To get inside the gpu container (can launch "poetry shell" from inside or "poetry add <package>")
+	make create-history
 	echo "Starting container ${IMAGE_NAME}"
-	docker run --name $(DOCKER_NAME_GPU) --gpus all --rm -it -v ${FOLDER}:/work -w /work -p ${PORT}:${PORT} -e "JUPYTER_PORT=${PORT}" ${IMAGE_NAME}
+	docker run --name $(DOCKER_NAME_GPU) --gpus all --rm -it \
+	-v ${FOLDER}:/work \
+	-v $$(pwd)/docker_history/.container_bash_history:/root/.bash_history \
+	-w /work -p ${PORT}:${PORT} \
+	-e "JUPYTER_PORT=${PORT}" ${IMAGE_NAME}
 .PHONY: start-gpu
 
 notebook: ## Start the Jupyter notebook (must be run from inside the container)
