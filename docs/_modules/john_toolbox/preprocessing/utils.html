@@ -156,6 +156,10 @@
 
 <span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="compute_in_parallel"><a class="viewcode-back" href="../../../_autosummary/john_toolbox.preprocessing.utils.compute_in_parallel.html#john_toolbox.preprocessing.utils.compute_in_parallel">[docs]</a><span class="k">def</span> <span class="nf">compute_in_parallel</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -164,6 +168,33 @@
         <span class="n">delayed</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="n">series</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">series</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="get_idx_cat_columns"><a class="viewcode-back" href="../../../_autosummary/john_toolbox.preprocessing.utils.get_idx_cat_columns.html#john_toolbox.preprocessing.utils.get_idx_cat_columns">[docs]</a><span class="k">def</span> <span class="nf">get_idx_cat_columns</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_modality_cat</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+    <span class="c1"># extract categorical columns</span>
+    <span class="n">cat_cols</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;object&quot;</span><span class="p">,</span> <span class="s2">&quot;category&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="c1"># extract numerical_columns</span>
+    <span class="n">numerical_cols</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="c1"># extract categorical column from number</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">numerical_cols</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">X</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="n">n_modality_cat</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;numerical col = </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> interpreted as categorical, nunique = </span><span class="si">{</span><span class="n">X</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="n">cat_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+
+    <span class="n">idx_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">col</span><span class="p">)</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cat_cols</span><span class="p">]</span>
+
+    <span class="n">idx_sorted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">idx_cols</span><span class="p">)</span>
+    <span class="n">cat_cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cat_cols</span><span class="p">)[</span><span class="n">idx_sorted</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">idx_cols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">idx_cols</span><span class="p">)[</span><span class="n">idx_sorted</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="n">idx_cols_mapping</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cat_cols&quot;</span><span class="p">:</span> <span class="n">cat_cols</span><span class="p">,</span> <span class="s2">&quot;idx_cols&quot;</span><span class="p">:</span> <span class="n">idx_cols</span><span class="p">}</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;idx_cols_mapping = </span><span class="si">{</span><span class="n">idx_cols_mapping</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">idx_cols_mapping</span></div>
 </pre></div>
 
            </div>

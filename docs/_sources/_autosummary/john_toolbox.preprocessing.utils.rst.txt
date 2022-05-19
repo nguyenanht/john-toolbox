@@ -1,4 +1,4 @@
-john\_toolbox.preprocessing.utils
+﻿john\_toolbox.preprocessing.utils
 =================================
 
 .. automodule:: john_toolbox.preprocessing.utils
@@ -16,6 +16,7 @@ john\_toolbox.preprocessing.utils
       :nosignatures:
    
       compute_in_parallel
+      get_idx_cat_columns
    
    
 
