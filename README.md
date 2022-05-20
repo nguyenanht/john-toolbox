@@ -18,7 +18,7 @@ Welcome to john_toolbox 👋
 [![Poetry](https://img.shields.io/badge/poetry-%233B82F6.svg?style=for-the-badge&logo=poetry&logoColor=white)](https://github.com/python-poetry/poetry)
 [![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)](https://github.com/pytorch/pytorch)
 
-> This is my own toolbox for pipeline preprocessing Transformer and Pytorch model with callbacks.
+> This is my own toolbox to handle preprocessing production ready based on scikit-learn Pipeline but with more flexibility.
 ### 🏠 [Homepage](https://github.com/nguyenanht/john-toolbox)
 
 ## Install
