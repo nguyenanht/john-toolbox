@@ -37,8 +37,7 @@ pip install john-toolbox
 
 ## How to use ?
 
-If you want examples. please refer to notebooks directory. It contains tutorials.
-
+If you want examples. please refer to [notebooks directory](https://github.com/nguyenanht/john-toolbox/tree/develop/notebooks). It contains tutorials on how to use the package and other useful tutorials to handle end to end machine learning project.
 
 
 
