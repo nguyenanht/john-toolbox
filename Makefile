@@ -151,7 +151,7 @@ build-releaser: ## Build docker image for releaser
 .PHONY: build-release
 
 chown: ## Give rights to src and notebook
-	sudo chown -R $$(whoami) notebooks john_toolbox tests data
+	sudo chown -R $$(whoami) notebooks john_toolbox tests data .git
 	echo "right added to notebooks john_toolbox tests data directories"
 
 env: ## Create .env file

@@ -160,7 +160,9 @@ class EncoderTransformer(BaseEstimator, TransformerMixin):
         self.is_drop_input_col = is_drop_input_col
 
         if self.new_cols_prefix is None:
-            self.new_cols_prefix = f"{self.column}_{self.encoder.__class__.__name__}_"
+            self.new_cols_prefix = (
+                f"{self.column}_{self.encoder.__class__.__name__}_"
+            )
 
     def fit(self, X: pd.DataFrame, y=None, **fit_params):
         self.encoder.fit(X[self.column].to_numpy().reshape(-1, 1))
@@ -170,7 +172,9 @@ class EncoderTransformer(BaseEstimator, TransformerMixin):
         logger.debug(f"name encoder : {self.encoder.__class__.__name__}")
         copy_df = X.copy()
 
-        encoder_result = self.encoder.transform(copy_df[self.column].to_numpy().reshape(-1, 1))
+        encoder_result = self.encoder.transform(
+            copy_df[self.column].to_numpy().reshape(-1, 1)
+        )
         if issparse(encoder_result):
             encoder_result = encoder_result.toarray()
 
@@ -191,7 +195,10 @@ class EncoderTransformer(BaseEstimator, TransformerMixin):
 
         except AttributeError:
             new_cols = (
-                [f"{self.new_cols_prefix}_{idx}" for idx in range(new_cols_size)]
+                [
+                    f"{self.new_cols_prefix}_{idx}"
+                    for idx in range(new_cols_size)
+                ]
                 if new_cols_size > 1
                 else [self.new_cols_prefix]
             )
