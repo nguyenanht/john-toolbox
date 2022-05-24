@@ -1,0 +1,43 @@
+#!/bin/bash
+set -e
+
+help_services() {
+    echo 'you must provide a docker compose service to run bash within'
+    echo 'possible values :'
+    echo '------------------------------------'
+    make services
+    echo '------------------------------------'
+}
+
+if [ $# -eq 0 ]; then
+    help_services
+    exit
+else
+    container=$1
+    shift 1
+fi
+
+
+case "$container" in
+    cx-app )
+        defaultCommand="sh"
+        opts=""
+        ;;
+    obj-storage )
+        defaultCommand="bash"
+        opts="--entrypoint=''"
+        ;;
+    * )
+        defaultCommand="bash"
+        opts=""
+        ;;
+esac
+
+if [ $# -eq 0 ]; then
+    cmd_args=$defaultCommand
+else
+    cmd_args="$@"
+fi
+
+echo running $cmd_args in $container container service
+docker-compose run --rm $opts $container $cmd_args
