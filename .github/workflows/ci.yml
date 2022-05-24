@@ -21,7 +21,13 @@ jobs:
       - name: "Run pytest"
         run: |
           make ci-pytest
+      # 3. run generate docs
       - name: "Test generate docs"
         run: |
           make docs
+      # 4. run linter
+      - name: "Linter"
+        run: |
+          make lint
+        
 
