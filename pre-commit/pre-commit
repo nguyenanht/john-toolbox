@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo "Launching pre-commit"
+echo ${PWD}
+make black
+echo ""
+make lint
