@@ -4,6 +4,11 @@ name: "CI pytest"
 # Define trigger
 on: push
 
+# Cancel the workflow
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
 
   # Job
