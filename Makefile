@@ -7,12 +7,13 @@ PORT=8885
 .SILENT: ;
 default: help;   # default target
 
-
 IMAGE_NAME=john-toolbox:latest
 IMAGE_RELEASER_NAME=release-changelog:latest
 DOCKER_NAME = johntoolbox
 DOCKER_NAME_GPU = johntoolboxgpu
 DOCKER_RUN = docker run  --rm  -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c
+SRC_DIR=john_toolbox
+
 
 light-mode-theme: ## Activate light mode theme
 	$(DOCKER_RUN) "poetry run jt -t grade3 -fs 95 -tfs 11 -nfs 115 -cellw 88% -T"
@@ -36,6 +37,8 @@ install: build## First time: Build image, and install all the dependencies, incl
 	docker run --rm -v ${FOLDER}:/work -w /work --entrypoint bash -lc ${IMAGE_NAME} -c 'poetry install'
 	echo "Activating notebook extension"
 	make up-notebook-extension
+	echo "Configuring-pre-commit"
+	make configure-pre-commit
 	echo "Changing current folder rights"
 	sudo chmod -R 777 .cache
 	make env
@@ -155,3 +158,21 @@ env: ## Create .env file
 	if [ ! -f .env  ]; then  cp .env.dist .env ; fi
 .PHONY: env
 
+configure-pre-commit:
+	$(DOCKER_RUN) 'poetry run pre-commit install -f'
+	make chown
+	echo "Copy pre-commit configuration to .git/hooks"
+	cp -a pre-commit/* .git/hooks/
+.PHONY: configure-pre-commit
+
+lint: ## flake8
+	echo "executing command inside docker..."
+	$(DOCKER_RUN) 'poetry run flake8 $(SRC_DIR)'
+	echo "apply flake8 done."
+.PHONY: lint
+
+black: ## black
+	echo "executing command inside docker..."
+	$(DOCKER_RUN) 'poetry run black $(SRC_DIR)'
+	echo "apply black done."
+.PHONY: black
