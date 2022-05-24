@@ -54,9 +54,9 @@ def setup_log_config(is_dev=False, level=None):
                 print(f"level logging = {level.upper()}")
             else:
                 logging.basicConfig(level=logging.INFO)
-                print(f"level logging = INFO")
+                print("level logging = INFO")
 
         else:
             logging.basicConfig(level=logging.INFO)
-            print(f"level logging = INFO")
+            print("level logging = INFO")
     return

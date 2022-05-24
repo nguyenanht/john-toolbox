@@ -41,7 +41,10 @@ COL_TO_KEEP = [
 # ----------- PIPELINE PREPROCESSING --------------
 # 1. Select the appropriate columns and cast to good format.
 conformity_column_list = [
-    {"name": "DROP columns", "transformer": SelectColumnsTransformer(columns=COL_TO_KEEP),},
+    {
+        "name": "DROP columns",
+        "transformer": SelectColumnsTransformer(columns=COL_TO_KEEP),
+    },
 ]
 
 for col_to_cast in ["Embarked", "Sex", "Cabin"]:
@@ -109,7 +112,10 @@ encoder_list = [
         "transformer": EncoderTransformer(
             encoder=OrdinalEncoder,
             column="Cabin",
-            encoder_args={"handle_unknown": "use_encoded_value", "unknown_value": -1,},
+            encoder_args={
+                "handle_unknown": "use_encoded_value",
+                "unknown_value": -1,
+            },
             new_cols_prefix="Cabin",
             is_drop_input_col=True,
         ),
