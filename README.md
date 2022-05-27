@@ -22,7 +22,7 @@ Welcome to john_toolbox 👋
 ### 🏠 [Homepage](https://github.com/nguyenanht/john-toolbox)
 
 # 💿 Installation with pip
-```sh
+```bash
 pip install john-toolbox
 ```
 
@@ -33,7 +33,7 @@ If you want examples, please refer to [notebooks directory](https://github.com/n
 # 🚧 Local development
 ## 💣 Installation guide
 ❗ by default, we install docker container with cpu only, if you want to install gpu mode :
-```sh
+```bash
 make env
 ```
 Comment in `.env` file at the root, the following lines :
@@ -47,34 +47,34 @@ Uncomment in `.env` file at the root, the following lines :
 # DOCKER_RUNTIME=nvidia
 ```
 then :
-```sh
+```bash
 make install
 ```
 if you want to use with local domain name, you need to generate certificate ssl in local development instead of url with port like `http://localhost:8885` :
-```sh
+```bash
 make stop ssl
 ```
 ## ✨ Usage
 ### Start project :
-```sh
+```bash
 make start
 ```
 ### Stop project : 
-```sh
+```bash
 make stop
 ```
 ### Display logs of specific service
-```sh
+```bash
 make logs svc="your_service_name_declared_in_docker_compose"
 ```
 
 ### Go inside a docker container
-```sh
+```bash
 ./cli your_service_name_declared_in_docker_compose
 ```
 
 ### 🦸 Need help
-```sh
+```bash
 make help
 ```
 ### Url
