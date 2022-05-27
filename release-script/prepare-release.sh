@@ -19,9 +19,10 @@ cd john-toolbox
 # Create release branch and push it
 git checkout -b release/${version}
 # Change version of package
-docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry version ${version}
+docker-compose run --rm -T john_dev poetry version ${version}
+# docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry version ${version}
 # Generate docs
-make install docs
+make install docs stop
 # Change version of project in readme
 sed -e "/version-/{ N; s/version-.*-blue/version-${version}-blue/ }" README.md  > tmp.md
 cat tmp.md > README.md
@@ -40,8 +41,8 @@ git add pyproject.toml README.md john_toolbox/__init__.py docs/
 git commit -m "chore: release v${version}"
 # Create tag for changelog generation
 git tag v${version}
-docker run -v ${PWD}:/work -w /work --entrypoint "" release-changelog:latest conventional-changelog -p angular -i CHANGELOG.md -s -r 0
-docker run -v ${PWD}:/work -w /work --entrypoint "" release-changelog:latest chmod 777 CHANGELOG.md
+docker run -f Dockerfile_cpu -v ${PWD}:/work -w /work --entrypoint "" release-changelog:latest conventional-changelog -p angular -i CHANGELOG.md -s -r 0
+docker run -f Dockerfile_cpu -v ${PWD}:/work -w /work --entrypoint "" release-changelog:latest chmod 777 CHANGELOG.md
 # Removing 4 first line of the file
 echo "$(tail -n +4 CHANGELOG.md)" > CHANGELOG.md
 # Deleting tag 
