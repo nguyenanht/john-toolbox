@@ -26,8 +26,8 @@ build: ## Build image
 	$(DKC) $(DKC_CFG) build
 .PHONY: build
 
-install: build ## First time: Build image, and install all the dependencies, including jupyter
-	echo "Setup variable env"
+install: ## First time: Build image, and install all the dependencies, including jupyter
+	echo "generate env file"
 	make env
 	make stop
 	echo "build docker images"
@@ -122,6 +122,7 @@ ci-pytest: install ## ci tests
 	$(DKC_RUN) make tests
 
 prepare-release: build build-releaser ## Prepare release branch with changelog for given version
+	echo "Executing script prepare-release.sh"
 	./release-script/prepare-release.sh
 .PHONY: prepare-release
 
