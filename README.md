@@ -5,7 +5,7 @@ Welcome to john_toolbox 👋
 </h1>
 
 
-![Version](https://img.shields.io/badge/version-0.5.0-blue.svg?cacheSeconds=2592000)
+![Version](https://img.shields.io/badge/version-0.5.1-blue.svg?cacheSeconds=2592000)
 [![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://nguyenanht.github.io/john-toolbox/)
 ![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-brightgreen.svg)
 ![Licence](https://img.shields.io/badge/License-MIT-FFB600.svg) ![Total-lines](https://tokei.rs/b1/github/nguyenanht/john-toolbox)
