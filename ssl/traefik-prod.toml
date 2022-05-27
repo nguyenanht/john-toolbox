@@ -1,0 +1,26 @@
+[api]
+  dashboard = true
+  insecure = true
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+
+  [entryPoints.websecure]
+    address = ":443"
+      [entryPoints.websecure.http.tls]
+        certResolver = "default"
+
+[providers]
+  [providers.docker]
+    watch = true
+    exposedByDefault = false
+    network = "web"
+
+[certificatesResolvers]
+  [certificatesResolvers.default]
+    [certificatesResolvers.default.acme]
+      email = "nonosnguyen@gmail.com"
+      storage = "/etc/cert/acme.json"
+      caServer = "https://acme-v02.api.letsencrypt.org/directory"
+    [certificatesResolvers.default.acme.tlsChallenge]

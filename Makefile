@@ -1,6 +1,7 @@
 # set default shell
 SHELL := $(shell which bash)
 FOLDER=$$(pwd)
+SSL_DIR = ssl
 # default shell options
 .SHELLFLAGS = -c
 .SILENT: ;
@@ -186,3 +187,24 @@ black: ## black
 	$(DKC_RUN) poetry run black $(SRC_DIR)
 	echo "apply black done."
 .PHONY: black
+
+ssl: ## Create local cert
+	if [ ! -f $(SSL_DIR)/cert-local-johntoolbox.key ]; then \
+		sudo chmod -R 777 ./$(SSL_DIR); \
+		docker run -it --rm -v ${PWD}/$(SSL_DIR):/work -w /work ubuntu bash -c "./create.sh"; \
+		cd $(SSL_DIR); \
+		./install-prerequisites.sh; \
+		./add-to-chromium-firefox.sh; \
+		./add-to-keychain.sh; \
+		cd ..; \
+		sudo chmod -R 777 ./$(SSL_DIR); \
+	fi;
+.PHONY: ssl
+
+rm-ssl: ## remove local cert
+	sudo rm -rf ssl/demoCA
+	sudo rm -rf ssl/*.crt
+	sudo rm -rf ssl/*.csr
+	sudo rm -rf ssl/*.key
+	sudo rm -rf ssl/*.pem
+.PHONY: rm-ssl
