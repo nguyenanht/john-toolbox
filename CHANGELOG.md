@@ -1,4 +1,15 @@
 
+## [0.5.1](https://github.com/nguyenanht/john-toolbox/compare/v0.5.0...v0.5.1) (2022-05-27)
+
+
+### Features
+
+* add linter and black ([5c7eb89](https://github.com/nguyenanht/john-toolbox/commit/5c7eb89e39a8191b4f6ff5ca7f7d8bfb270a4371))
+* add linter to github action ci ([1e84196](https://github.com/nguyenanht/john-toolbox/commit/1e84196ac75dfa10272db79d7946017edaa14203))
+* move docker to docker-compose handling ([5725a2f](https://github.com/nguyenanht/john-toolbox/commit/5725a2fecf0f6fc63fd212d1506b11f03f6015f5))
+
+
+
 # [0.5.0](https://github.com/nguyenanht/john-toolbox/compare/v0.4.9...v0.5.0) (2022-05-19)
 
 
