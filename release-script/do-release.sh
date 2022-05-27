@@ -43,7 +43,9 @@ git tag v${version}
 
 # Build release
 echo "Building latest build"
-docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry build
+make install stop
+docker-compose run --rm -T john_dev poetry build
+#docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry build
 
 echo "Merging into develop and main"
 git checkout main
@@ -62,10 +64,12 @@ docker run -v ${PWD}:/work -w /work --entrypoint "" release-changelog:latest con
 
 # Build release
 echo "Building latest build"
-docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry build
+docker-compose run --rm -T john_dev poetry build
+#docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry build
 # Build release
 echo "Publishing latest build"
-docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry publish -u ${pipyUser} -p ${pipyPassword}
+docker-compose run --rm -T john_dev poetry publish -u ${pipyUser} -p ${pipyPassword}
+#docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry publish -u ${pipyUser} -p ${pipyPassword}
 
 echo "Deleting release branch"
 git checkout develop

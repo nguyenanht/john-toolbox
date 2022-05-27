@@ -4,12 +4,22 @@ name: "CI pytest"
 # Define trigger
 on: push
 
+# Cancel the workflow
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
 
   # Job
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    env:
+      NOTEBOOK_PORT: 8885
+      PYTHON_PATH: .cache/poetry/john-toolbox-DJpFP61h-py3.8/bin/python
+      DOMAIN_NAME_LOCAL: johntoolbox.localhost
+      DEVICE: cpu
+      DOCKER_RUNTIME: runc
     # define task
     steps:
       # 1. get content
@@ -18,10 +28,20 @@ jobs:
         with:
           persist-credentials: false
       # 2. run pytest
+      - name: "Run env"
+        run: |
+          make env
+      # 2. run pytest
       - name: "Run pytest"
         run: |
           make ci-pytest
+      # 3. run generate docs
       - name: "Test generate docs"
         run: |
           make docs
+      # 4. run linter
+      - name: "Linter"
+        run: |
+          make lint
+        
 

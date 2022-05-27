@@ -1,0 +1,63 @@
+version: "3.8"
+services:
+#  proxy:
+#    image: "traefik:v2.6.1"
+#    container_name: traefik-container
+#    command:
+#      #- "--log.level=DEBUG"
+#      - "--api.insecure=true"
+#      - "--providers.docker=true"
+#      - "--providers.docker.exposedbydefault=false"
+#      - "--entrypoints.websecure.address=:443"
+#      - "--entrypoints.websecure.http.tls=true"
+#      - "--entrypoints.web.address=:80"
+#      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+#      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+#      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+#      - "--providers.file.filename=/etc/traefik/configfile.toml"
+#    ports:
+#      - "80:80"
+#      - "8080:8080"
+#      - "443:443"
+#    volumes:
+#      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+#      - "./ssl:/etc/cert:ro"
+#      - "./ssl/traefik.toml:/etc/traefik/configfile.toml:ro"
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.proxy.rule=Host(`proxy.${DOMAIN_NAME_LOCAL}`)"
+#      - "traefik.http.routers.proxy.entrypoints=websecure"
+#      - "traefik.http.services.proxy.loadbalancer.server.port=8080"
+#      - "traefik.http.middlewares.limit.buffering.maxRequestBodyBytes=50000000"  # Sets the maximum request body to 50Mb
+#      - "traefik.http.middlewares.limit.buffering.memRequestBodyBytes=100000000"  # 100Mb
+#      - "traefik.http.middlewares.limit.buffering.maxResponseBodyBytes=100000000"  # 100Mb
+#      - "traefik.http.middlewares.limit.buffering.memResponseBodyBytes=100000000"  # 100Mb
+#    networks:
+#      john_toolbox_network:
+
+  # ------------------------------------------ JUPYTER NOTEBOOK DEV CONTAINER--------------------------------------------------------
+  john_dev:
+    ports:
+      - "${NOTEBOOK_PORT}:${NOTEBOOK_PORT}"
+    container_name: notebook-container
+    working_dir: /work
+    build:
+      context: .
+      dockerfile: Dockerfile_${DEVICE}
+    runtime: ${DOCKER_RUNTIME}
+    command: poetry run jupyter notebook --port=${NOTEBOOK_PORT} --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token=''
+    # command: poetry run jupyter lab --port=${NOTEBOOK_PORT} --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token='' --notebook-dir .
+    volumes:
+      - .:/work
+    environment:
+      ENV_LOGGER: "DEV"
+    networks:
+      john_toolbox_network:
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.dev.rule=Host(`notebook.${DOMAIN_NAME_LOCAL}`)"
+        - "traefik.http.routers.dev.entrypoints=websecure"
+        - "traefik.http.services.dev.loadbalancer.server.port=8901"
+
+networks:
+    john_toolbox_network:

@@ -38,7 +38,9 @@ def plot_auc_curves(y_test, model_probs):
     # calculate the no skill line as the proportion of the positive class
     no_skill = len(y_test[y_test == 1]) / len(y_test)
     # plot the no skill precision-recall curve
-    plt.plot([0, 1], [no_skill, no_skill], linestyle="--", label="No Skill PR AUC")
+    plt.plot(
+        [0, 1], [no_skill, no_skill], linestyle="--", label="No Skill PR AUC"
+    )
     plt.plot([0, 1], [0, 1], linestyle="--", label="No Skill ROC AUC")
     # plot model precision-recall curve
     plt.plot(recall, precision, marker=".", label=f"PR AUC ({pr_auc})")
@@ -68,7 +70,13 @@ def plot_classification_report(y_true, y_pred, size=(5, 5), ax=None):
     rep = np.insert(rep, rep.shape[0], avg, axis=0)
 
     sns.heatmap(
-        rep, annot=True, cbar=False, xticklabels=xticks, yticklabels=yticks, ax=ax, fmt="g",
+        rep,
+        annot=True,
+        cbar=False,
+        xticklabels=xticks,
+        yticklabels=yticks,
+        ax=ax,
+        fmt="g",
     ).set_title(f"Accuracy score : {round(accuracy_score(y_true, y_pred), 4)}")
 
 

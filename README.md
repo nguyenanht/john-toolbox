@@ -3,15 +3,22 @@
 Welcome to john_toolbox 👋
 
 </h1>
-<p>
-<img alt="Version" src="https://img.shields.io/badge/version-0.5.0-blue.svg?cacheSeconds=2592000" />
-<a href="https://nguyenanht.github.io/john-toolbox/" target="_blank"><img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" /></a>
-<a href="https://github.com/nguyenanht/john-toolbox/graphs/commit-activity" target="_blank"><img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" /></a>
-<a href="None" target="_blank"><img alt="License:MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" /></a>
 
-</p>
 
-> This is my own toolbox for pipeline preprocessing Transformer and Pytorch model with callbacks.
+![Version](https://img.shields.io/badge/version-0.5.1-blue.svg?cacheSeconds=2592000)
+[![Documentation](https://img.shields.io/badge/documentation-yes-brightgreen.svg)](https://nguyenanht.github.io/john-toolbox/)
+![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-brightgreen.svg)
+![Licence](https://img.shields.io/badge/License-MIT-FFB600.svg) ![Total-lines](https://tokei.rs/b1/github/nguyenanht/john-toolbox)
+[![Downloads](https://static.pepy.tech/personalized-badge/john-toolbox?period=month&units=international_system&left_color=grey&right_color=red&left_text=Downloads/Month)](https://pepy.tech/project/john-toolbox)
+[![Downloads](https://static.pepy.tech/personalized-badge/john-toolbox?period=total&units=international_system&left_color=grey&right_color=red&left_text=Downloads/Total)](https://pepy.tech/project/john-toolbox)
+
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://github.com/scikit-learn/scikit-learn)
+[![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)](https://github.com/pandas-dev/pandas)
+[![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=for-the-badge&logo=numpy&logoColor=white)](https://github.com/numpy/numpy)
+[![Poetry](https://img.shields.io/badge/poetry-%233B82F6.svg?style=for-the-badge&logo=poetry&logoColor=white)](https://github.com/python-poetry/poetry)
+[![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)](https://github.com/pytorch/pytorch)
+
+> This is my own toolbox to handle preprocessing production ready based on scikit-learn Pipeline but with more flexibility.
 ### 🏠 [Homepage](https://github.com/nguyenanht/john-toolbox)
 
 ## Install
@@ -30,8 +37,7 @@ pip install john-toolbox
 
 ## How to use ?
 
-If you want examples. please refer to notebooks directory. It contains tutorials.
-
+If you want examples. please refer to [notebooks directory](https://github.com/nguyenanht/john-toolbox/tree/develop/notebooks). It contains tutorials on how to use the package and other useful tutorials to handle end to end machine learning project.
 
 
 

@@ -19,9 +19,14 @@ cd john-toolbox
 # Create release branch and push it
 git checkout -b release/${version}
 # Change version of package
-docker run --rm -v ${PWD}:/work -w /work john-toolbox:latest poetry version ${version}
+# docker-compose run --rm -T john_dev poetry version ${version}
+echo "installing"
+make install stop
+echo "update version in pyproject.toml"
+docker-compose run --rm -T john_dev poetry version ${version}
 # Generate docs
-make install docs
+echo "generate docs"
+make docs stop
 # Change version of project in readme
 sed -e "/version-/{ N; s/version-.*-blue/version-${version}-blue/ }" README.md  > tmp.md
 cat tmp.md > README.md

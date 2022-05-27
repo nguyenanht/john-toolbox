@@ -44,13 +44,23 @@ def objective_xgb(trial, X_train, X_valid, y_train, y_valid):
         param["eta"] = trial.suggest_float("eta", 1e-8, 1e-1, log=True)
         # defines how selective algorithm is.
         param["gamma"] = trial.suggest_float("gamma", 1e-8, 1.0, log=True)
-        param["grow_policy"] = trial.suggest_categorical("grow_policy", ["depthwise", "lossguide"])
+        param["grow_policy"] = trial.suggest_categorical(
+            "grow_policy", ["depthwise", "lossguide"]
+        )
 
     if param["booster"] == "dart":
-        param["sample_type"] = trial.suggest_categorical("sample_type", ["uniform", "weighted"])
-        param["normalize_type"] = trial.suggest_categorical("normalize_type", ["tree", "forest"])
-        param["rate_drop"] = trial.suggest_float("rate_drop", 1e-8, 1.0, log=True)
-        param["skip_drop"] = trial.suggest_float("skip_drop", 1e-8, 1.0, log=True)
+        param["sample_type"] = trial.suggest_categorical(
+            "sample_type", ["uniform", "weighted"]
+        )
+        param["normalize_type"] = trial.suggest_categorical(
+            "normalize_type", ["tree", "forest"]
+        )
+        param["rate_drop"] = trial.suggest_float(
+            "rate_drop", 1e-8, 1.0, log=True
+        )
+        param["skip_drop"] = trial.suggest_float(
+            "skip_drop", 1e-8, 1.0, log=True
+        )
 
     xgb = XGBClassifier(**param)
 
@@ -81,11 +91,17 @@ def objective_xgb(trial, X_train, X_valid, y_train, y_valid):
     return auc
 
 
-def optimize_hyperparameter(X_train, X_valid, y_train, y_valid, n_trials=50, timeout=None):
+def optimize_hyperparameter(
+    X_train, X_valid, y_train, y_valid, n_trials=50, timeout=None
+):
     study = optuna.create_study(direction="maximize")
     study.optimize(
         func=lambda trial: objective_xgb(
-            trial=trial, X_train=X_train, X_valid=X_valid, y_train=y_train, y_valid=y_valid
+            trial=trial,
+            X_train=X_train,
+            X_valid=X_valid,
+            y_train=y_train,
+            y_valid=y_valid,
         ),
         n_trials=n_trials,
         timeout=timeout,
