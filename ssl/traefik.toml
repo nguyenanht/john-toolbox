@@ -1,0 +1,3 @@
+[[tls.certificates]]
+  certFile = "/etc/cert/cert-local-johntoolbox.crt"
+  keyFile = "/etc/cert/cert-local-johntoolbox.key"
