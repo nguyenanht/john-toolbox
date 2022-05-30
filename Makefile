@@ -77,14 +77,13 @@ deps: ## install dependencies
 	$(DKC_RUN) poetry install --sync
 .PHONY: deps
 
-notebook: ## Start the Jupyter notebook (must be run from inside the container)
-	poetry run jupyter notebook --allow-root --ip 0.0.0.0 --port ${PORT} --no-browser --notebook-dir .
-	# &> /dev/null &
+notebook:
+	./open_nb.sh
 .PHONY: notebook
 
 lab: ## Start the Jupyter lab (must be run from inside the container)
 	poetry run jupyter lab --allow-root --ip 0.0.0.0 --port ${PORT} --no-browser --notebook-dir .
-.PHONY: notebook
+.PHONY: lab
 
 ps: ## see docker running
 	make ascii-logo
