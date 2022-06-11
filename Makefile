@@ -169,7 +169,8 @@ reset-theme: ## Activate dark mode theme
 
 
 configure-pre-commit:
-	$(DKC_RUN) poetry run pre-commit install -f
+	# temporary fix for ubuntu20.04 Dockerfile_gpu
+	$(DKC_RUN) bash -c "git config --global --add safe.directory /work && poetry run pre-commit install -f"
 	make chown
 	echo "Copy pre-commit configuration to .git/hooks"
 	cp -a pre-commit/* .git/hooks/
