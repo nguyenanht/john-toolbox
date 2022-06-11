@@ -81,9 +81,9 @@ notebook:
 	./open_nb.sh
 .PHONY: notebook
 
-lab: ## Start the Jupyter lab (must be run from inside the container)
-	poetry run jupyter lab --allow-root --ip 0.0.0.0 --port ${PORT} --no-browser --notebook-dir .
-.PHONY: lab
+#lab: ## Start the Jupyter lab (must be run from inside the container)
+#	poetry run jupyter lab --allow-root --ip 0.0.0.0 --port ${PORT} --no-browser --notebook-dir .
+#.PHONY: lab
 
 ps: ## see docker running
 	make ascii-logo
@@ -169,7 +169,8 @@ reset-theme: ## Activate dark mode theme
 
 
 configure-pre-commit:
-	$(DKC_RUN) poetry run pre-commit install -f
+	# temporary fix for ubuntu20.04 Dockerfile_gpu
+	$(DKC_RUN) bash -c "git config --global --add safe.directory /work && poetry run pre-commit install -f"
 	make chown
 	echo "Copy pre-commit configuration to .git/hooks"
 	cp -a pre-commit/* .git/hooks/
