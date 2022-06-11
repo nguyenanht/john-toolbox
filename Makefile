@@ -103,12 +103,23 @@ services: ## List all possible services
 .PHONY: services
 
 tests: ## To run tests inside the container (Go inside dev container to execute it)
-	poetry run coverage run -m pytest -p no:cacheprovider tests/
+	if [ -f /.dockerenv ]; then \
+    	echo "Running inside docker"; \
+		poetry run coverage run -m pytest -p no:cacheprovider tests/ ; \
+	else \
+		echo "You cannot run tests outside container."; \
+	fi
 .PHONY: tests
 
 coverage: tests  ## To see tests coverage (Go inside dev container to execute it)
-	poetry run coverage report
-	poetry run coverage html
+	if [ -f /.dockerenv ]; then \
+    	echo "Running inside docker"; \
+		poetry run coverage report; \
+		poetry run coverage html; \
+	else \
+		echo "You cannot run coverage outside container."; \
+	fi
+	
 .PHONY: coverage
 
 docs: build ## Build and generate docs
@@ -124,6 +135,7 @@ docs-prod: install ## Build and generate docs in production automatically
 ci-pytest: install ## ci tests
 	make env
 	$(DKC_RUN) make tests
+.PHONY: ci-pytest
 
 prepare-release: build build-releaser ## Prepare release branch with changelog for given version
 	echo "Executing script prepare-release.sh"
@@ -170,7 +182,6 @@ dark-mode-theme: ## Activate dark mode theme
 reset-theme: ## Activate dark mode theme
 	$(DKC_RUN) "poetry run jt -r"
 .PHONY: reset-theme
-
 
 configure-pre-commit:
 	# temporary fix for ubuntu20.04 Dockerfile_gpu
