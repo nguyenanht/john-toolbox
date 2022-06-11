@@ -7,7 +7,11 @@ SSL_DIR = ssl
 .SILENT: ;
 default: help;   # default target
 
+# TODO : handle image_name for CPU
 IMAGE_NAME=john-toolbox:latest
+# cuda image
+IMAGE_NAME_GPU=nguyenanht/cuda-python-poetry
+
 IMAGE_RELEASER_NAME=release-changelog:latest
 DOCKER_NAME = johntoolbox
 DOCKER_NAME_GPU = johntoolboxgpu
@@ -208,3 +212,11 @@ rm-ssl: ## remove local cert
 	sudo rm -rf ssl/*.key
 	sudo rm -rf ssl/*.pem
 .PHONY: rm-ssl
+
+push-docker-image-gpu:
+	docker login
+	@read -p "Enter tag name for GPU image ${IMAGE_NAME_GPU}:{tag}:" tag; \
+	echo "building ${IMAGE_NAME_GPU}:$$tag"; \
+	docker build -t  ${IMAGE_NAME_GPU}:$$tag . -f Dockerfile_gpu; \
+	docker push  ${IMAGE_NAME_GPU}:$$tag;
+.PHONY: push-docker-image-gpu
