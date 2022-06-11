@@ -78,7 +78,7 @@ deps: ## install dependencies
 .PHONY: deps
 
 notebook: ## Start the Jupyter notebook (must be run from inside the container)
-	poetry run jupyter notebook --allow-root --ip 0.0.0.0 --port ${PORT} --no-browser --notebook-dir .
+	$(DKC_RUN) poetry run jupyter notebook --allow-root --ip 0.0.0.0 --port ${PORT} --no-browser --notebook-dir .
 	# &> /dev/null &
 .PHONY: notebook
 
@@ -170,7 +170,7 @@ reset-theme: ## Activate dark mode theme
 
 
 configure-pre-commit:
-	$(DKC_RUN) poetry run pre-commit install -f
+	$(DKC_RUN) git config --global --add safe.directory /work && poetry run pre-commit install -f
 	make chown
 	echo "Copy pre-commit configuration to .git/hooks"
 	cp -a pre-commit/* .git/hooks/
