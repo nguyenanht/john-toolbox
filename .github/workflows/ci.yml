@@ -14,19 +14,14 @@ jobs:
   # Job
   build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-      NOTEBOOK_PORT: 8885
-      PYTHON_PATH: .cache/poetry/john-toolbox-DJpFP61h-py3.8/bin/python
-      DOMAIN_NAME_LOCAL: johntoolbox.localhost
-      DEVICE: cpu
-      DOCKER_RUNTIME: runc
     # define task
     steps:
       # 1. get content
       - name: "Checkout"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           persist-credentials: false
+          fetch-depth: 0
       # 2. run pytest
       - name: "Run env"
         run: |
