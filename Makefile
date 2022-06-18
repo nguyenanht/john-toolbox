@@ -168,7 +168,9 @@ up-notebook-extension: ## Activate useful notebook extensions
 	&&  poetry run jupyter nbextension enable toc2/main --sys-prefix \
 	&&  poetry run jupyter nbextension enable toggle_all_line_numbers/main --sys-prefix \
 	&&  poetry run jupyter nbextension enable cell_filter/cell_filter --sys-prefix \
-	&&  poetry run jupyter nbextension enable code_prettify/autopep8 --sys-prefix"
+	&&  poetry run jupyter nbextension enable code_prettify/autopep8 --sys-prefix \
+	&&  poetry run jupyter nbextension install https://github.com/drillan/jupyter-black/archive/master.zip --sys-prefix \
+	&&  poetry run jupyter nbextension enable jupyter-black-master/jupyter-black --sys-prefix"
 .PHONY: up-notebook-extension
 
 light-mode-theme: ## Activate light mode theme
