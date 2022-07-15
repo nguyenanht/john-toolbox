@@ -7,7 +7,11 @@ SSL_DIR = ssl
 .SILENT: ;
 default: help;   # default target
 
+# TODO : handle image_name for CPU
 IMAGE_NAME=john-toolbox:latest
+# cuda image
+IMAGE_NAME_GPU=nguyenanht/cuda-python-poetry
+
 IMAGE_RELEASER_NAME=release-changelog:latest
 DOCKER_NAME = johntoolbox
 DOCKER_NAME_GPU = johntoolboxgpu
@@ -77,14 +81,13 @@ deps: ## install dependencies
 	$(DKC_RUN) poetry install --sync
 .PHONY: deps
 
-notebook: ## Start the Jupyter notebook (must be run from inside the container)
-	poetry run jupyter notebook --allow-root --ip 0.0.0.0 --port ${PORT} --no-browser --notebook-dir .
-	# &> /dev/null &
+notebook:
+	./open_nb.sh
 .PHONY: notebook
 
-lab: ## Start the Jupyter lab (must be run from inside the container)
-	poetry run jupyter lab --allow-root --ip 0.0.0.0 --port ${PORT} --no-browser --notebook-dir .
-.PHONY: notebook
+#lab: ## Start the Jupyter lab (must be run from inside the container)
+#	poetry run jupyter lab --allow-root --ip 0.0.0.0 --port ${PORT} --no-browser --notebook-dir .
+#.PHONY: lab
 
 ps: ## see docker running
 	make ascii-logo
@@ -100,12 +103,23 @@ services: ## List all possible services
 .PHONY: services
 
 tests: ## To run tests inside the container (Go inside dev container to execute it)
-	poetry run coverage run -m pytest -p no:cacheprovider tests/
+	if [ -f /.dockerenv ]; then \
+    	echo "Running inside docker"; \
+		poetry run coverage run -m pytest -p no:cacheprovider tests/ ; \
+	else \
+		echo "You cannot run tests outside container."; \
+	fi
 .PHONY: tests
 
 coverage: tests  ## To see tests coverage (Go inside dev container to execute it)
-	poetry run coverage report
-	poetry run coverage html
+	if [ -f /.dockerenv ]; then \
+    	echo "Running inside docker"; \
+		poetry run coverage report; \
+		poetry run coverage html; \
+	else \
+		echo "You cannot run coverage outside container."; \
+	fi
+	
 .PHONY: coverage
 
 docs: build ## Build and generate docs
@@ -121,6 +135,7 @@ docs-prod: install ## Build and generate docs in production automatically
 ci-pytest: install ## ci tests
 	make env
 	$(DKC_RUN) make tests
+.PHONY: ci-pytest
 
 prepare-release: build build-releaser ## Prepare release branch with changelog for given version
 	echo "Executing script prepare-release.sh"
@@ -153,7 +168,9 @@ up-notebook-extension: ## Activate useful notebook extensions
 	&&  poetry run jupyter nbextension enable toc2/main --sys-prefix \
 	&&  poetry run jupyter nbextension enable toggle_all_line_numbers/main --sys-prefix \
 	&&  poetry run jupyter nbextension enable cell_filter/cell_filter --sys-prefix \
-	&&  poetry run jupyter nbextension enable code_prettify/autopep8 --sys-prefix"
+	&&  poetry run jupyter nbextension enable code_prettify/autopep8 --sys-prefix \
+	&&  poetry run jupyter nbextension install https://github.com/drillan/jupyter-black/archive/master.zip --sys-prefix \
+	&&  poetry run jupyter nbextension enable jupyter-black-master/jupyter-black --sys-prefix"
 .PHONY: up-notebook-extension
 
 light-mode-theme: ## Activate light mode theme
@@ -168,9 +185,9 @@ reset-theme: ## Activate dark mode theme
 	$(DKC_RUN) "poetry run jt -r"
 .PHONY: reset-theme
 
-
 configure-pre-commit:
-	$(DKC_RUN) poetry run pre-commit install -f
+	# temporary fix for ubuntu20.04 Dockerfile_gpu
+	$(DKC_RUN) bash -c "git config --global --add safe.directory /work && poetry run pre-commit install -f"
 	make chown
 	echo "Copy pre-commit configuration to .git/hooks"
 	cp -a pre-commit/* .git/hooks/
@@ -208,3 +225,11 @@ rm-ssl: ## remove local cert
 	sudo rm -rf ssl/*.key
 	sudo rm -rf ssl/*.pem
 .PHONY: rm-ssl
+
+push-docker-image-gpu:
+	docker login
+	@read -p "Enter tag name for GPU image ${IMAGE_NAME_GPU}:{tag}:" tag; \
+	echo "building ${IMAGE_NAME_GPU}:$$tag"; \
+	docker build -t  ${IMAGE_NAME_GPU}:$$tag . -f Dockerfile_gpu; \
+	docker push  ${IMAGE_NAME_GPU}:$$tag;
+.PHONY: push-docker-image-gpu

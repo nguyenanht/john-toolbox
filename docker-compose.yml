@@ -49,6 +49,8 @@ services:
     # command: poetry run jupyter lab --port=${NOTEBOOK_PORT} --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token='' --notebook-dir .
     volumes:
       - .:/work
+    # https://github.com/ultralytics/yolov3/issues/283 for GPU support
+    ipc: host
     environment:
       ENV_LOGGER: "DEV"
     networks:
