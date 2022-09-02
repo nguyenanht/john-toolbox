@@ -17,7 +17,7 @@ RUN apt update \
     && apt-get clean
 
 
-ENV POETRY_VERSION="1.2.0b3"
+ENV POETRY_VERSION="1.2.0"
 ENV POETRY_CACHE /work/.cache/poetry
 ENV POETRY_HOME /usr/local/
 ENV POETRY_VIRTUALENVS_PATH=$POETRY_CACHE
