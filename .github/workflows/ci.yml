@@ -23,25 +23,43 @@ jobs:
     # define task
     steps:
       # 1. get content
-      - name: "Checkout"
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
           persist-credentials: false
       # 2. run pytest
-      - name: "Run env"
+      - name: Run env
         run: |
           make env
-      # 2. run pytest
-      - name: "Run pytest"
+      # 3. cache
+      - name: Cache Packages
+        uses: actions/cache@v3
+        with:
+          path: .cache
+          key: ${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
+      # 4. install package
+      - name: Install package
         run: |
-          make ci-pytest
-      # 3. run generate docs
-      - name: "Test generate docs"
-        run: |
-          make docs
-      # 4. run linter
+          make install
+      - name: Reclaim cache directory
+        run: sudo chown -R 1001:1001 .cache
+      # 5. run linter
       - name: "Linter"
         run: |
           make lint
+      - name: "pwd"
+        run: |
+          echo $(whoami)
+      - name: "ls"
+        run: |
+          ls -la .cache
+      # 6. run pytest
+      - name: Run pytest
+        run: |
+          make ci-pytest
+      # 7. run generate docs
+      - name: Test generate docs
+        run: |
+          make docs
         
 
