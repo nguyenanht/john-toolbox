@@ -27,7 +27,7 @@ def extract_X_y(df, target_name):
 
 
 COL_TO_KEEP = [
-    "PassengerId",
+    # "PassengerId",
     "Survived",
     "Pclass",
     "Sex",

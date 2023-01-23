@@ -17,13 +17,14 @@ logger = logging.getLogger(__name__)
 sns.set_style("darkgrid")
 
 
-def plot_auc_curves(y_test, model_probs):
+def plot_auc_curves(y_test, model_probs, title=""):
     """Plot no skill, model precision-recall curves and roc auc curves
 
     Parameters
     ----------
     y_test :
     model_probs :
+    title :
 
     Returns
     -------
@@ -50,6 +51,8 @@ def plot_auc_curves(y_test, model_probs):
     plt.ylabel("Precision/FPR")
     # show the legend
     plt.legend()
+    # displaying the title
+    plt.title(title)
     # show the plot
     plt.show()
 
