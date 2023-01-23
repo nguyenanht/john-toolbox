@@ -51,15 +51,79 @@ services:
       - .:/work
     # https://github.com/ultralytics/yolov3/issues/283 for GPU support
     ipc: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     environment:
       ENV_LOGGER: "DEV"
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PRE_COMMIT_HOME: "/work/.cache"
     networks:
       john_toolbox_network:
     labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.dev.rule=Host(`nb.${DOMAIN_NAME_LOCAL}`)"
-        - "traefik.http.routers.dev.entrypoints=websecure"
-        - "traefik.http.services.dev.loadbalancer.server.port=${NOTEBOOK_PORT}"
+        - "traefik.http.routers.john_dev.rule=Host(`nb.${DOMAIN_NAME_LOCAL}`)"
+        - "traefik.http.routers.john_dev.entrypoints=websecure"
+        - "traefik.http.services.john_dev.loadbalancer.server.port=${NOTEBOOK_PORT}"
+  # ------------------------------------------ DATABASE CONTAINER --------------------------------------------------------
+  postgres_john:
+    container_name: postgres-john
+    image: postgres:14.4  # https://hub.docker.com/_/postgres
+    restart: always
+    command: -p ${POSTGRES_PORT}
+    environment:
+      # This optional variable can be used to define another location -
+      # like a subdirectory - for the database files.
+      - PGDATA=/var/lib/postgresql/data
+      # This optional environment variable is used in conjunction with POSTGRES_PASSWORD
+      # to set a user and its password. This variable will create the specified user with superuser
+      # power and a database with the same name. If it is not specified, then the default user of
+      # postgres will be used.
+      - POSTGRES_USER=${POSTGRES_USER}
+      # This environment variable is required for you to use the PostgreSQL image.
+      # It must not be empty or undefined. This environment variable sets the superuser
+      # password for PostgreSQL. The default superuser is defined by the POSTGRES_USER environment variable.
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    #      - POSTGRES_INITDB_ARGS="--debug"
+    volumes:
+      - ./data/postgresdb:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}"
+      - "5433"
+    networks:
+      john_toolbox_network:
+  # ------------------------------------------ PGADMIN CONTAINER --------------------------------------------------------
+  pgadmin_john:
+    container_name: pgadmin-john
+    image: dpage/pgadmin4:6.12
+    depends_on:
+      - postgres_john
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=${PGADMIN_PORT}
+      - PGADMIN_LISTEN_ADDRESS=0.0.0.0
+    ports:
+      - "${PGADMIN_PORT}:${PGADMIN_PORT}"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+      - ./data/pgadmin/servers.json:/pgadmin4/servers.json
+    networks:
+      john_toolbox_network:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pgadmin_john.rule=Host(`pgadmin.${DOMAIN_NAME_LOCAL}`)"
+      - "traefik.http.routers.pgadmin_john.entrypoints=websecure"
+      - "traefik.http.services.pgadmin_john.loadbalancer.server.port=${PGADMIN_PORT}"
+volumes:
+  pgadmin:
 
 networks:
     john_toolbox_network:
