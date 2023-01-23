@@ -9,12 +9,13 @@ from https://github.com/optuna/optuna-examples/blob/main/xgboost/xgboost_simple.
 
 import pprint
 import optuna
+from optuna.samplers import TPESampler
 from xgboost import XGBClassifier
 import logging
 
 logger = logging.getLogger(__name__)
 
-EVAL_METRIC = ["logloss", "auc"]
+EVAL_METRIC = ["logloss", "aucpr"]
 
 
 def objective_xgb(trial, X_train, X_valid, y_train, y_valid):
@@ -41,7 +42,7 @@ def objective_xgb(trial, X_train, X_valid, y_train, y_valid):
         param["max_depth"] = trial.suggest_int("max_depth", 3, 9, step=2)
         # minimum child weight, larger the term more conservative the tree.
         param["min_child_weight"] = trial.suggest_int("min_child_weight", 2, 10)
-        param["eta"] = trial.suggest_float("eta", 1e-8, 1e-1, log=True)
+        param["eta"] = trial.suggest_float("eta", 1e-8, 1e-2, log=True)
         # defines how selective algorithm is.
         param["gamma"] = trial.suggest_float("gamma", 1e-8, 1.0, log=True)
         param["grow_policy"] = trial.suggest_categorical(
@@ -67,7 +68,7 @@ def objective_xgb(trial, X_train, X_valid, y_train, y_valid):
     xgb.fit(
         X_train,
         y_train.to_numpy().reshape(-1),
-        early_stopping_rounds=50,
+        early_stopping_rounds=100,
         eval_set=[
             (X_train, y_train.to_numpy().reshape(-1)),
             (X_valid, y_valid.to_numpy().reshape(-1)),
@@ -78,7 +79,6 @@ def objective_xgb(trial, X_train, X_valid, y_train, y_valid):
 
     results = xgb.evals_result()
     best_iteration = xgb.best_iteration
-    print(f"Best Iteration: {best_iteration}")
     res = {
         eval_name: {key: val[xgb.best_iteration] for key, val in values.items()}
         for eval_name, values in results.items()
@@ -86,15 +86,21 @@ def objective_xgb(trial, X_train, X_valid, y_train, y_valid):
     logger.info(res)
 
     # accuracy = sklearn.metrics.accuracy_score(valid_y, pred_labels)
-    auc = res["validation_1"]["auc"]
+    auc = res["validation_1"]["aucpr"]
+
+    trial.set_user_attr("best_n_estimators", best_iteration + 1)
+    logger.info(f"best_n_estimators : {best_iteration +1}")
 
     return auc
 
 
 def optimize_hyperparameter(
-    X_train, X_valid, y_train, y_valid, n_trials=50, timeout=None
+    X_train, X_valid, y_train, y_valid, n_trials=50, timeout=None, seed=None
 ):
-    study = optuna.create_study(direction="maximize")
+    # https://tech.preferred.jp/en/blog/multivariate-tpe-makes-optuna-even-more-powerful/
+    study = optuna.create_study(
+        direction="maximize", sampler=TPESampler(multivariate=True, seed=seed)
+    )
     study.optimize(
         func=lambda trial: objective_xgb(
             trial=trial,
@@ -108,8 +114,8 @@ def optimize_hyperparameter(
     )
 
     logger.info(f"Number of finished trials: {len(study.trials)}")
-    trial = study.best_trial
+    best_trial = study.best_trial
 
-    logger.info(f"Best trial value: {trial.value}")
-    pprint.pprint(trial.params)
-    return trial
+    logger.info(f"Best trial value: {best_trial.value}")
+    pprint.pprint(best_trial.params)
+    return best_trial, study
