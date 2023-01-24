@@ -51,13 +51,6 @@ services:
       - .:/work
     # https://github.com/ultralytics/yolov3/issues/283 for GPU support
     ipc: host
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
     environment:
       ENV_LOGGER: "DEV"
       POSTGRES_USER: ${POSTGRES_USER}
