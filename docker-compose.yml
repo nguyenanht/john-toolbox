@@ -28,14 +28,14 @@ services:
       - "traefik.http.routers.proxy.rule=Host(`proxy.${DOMAIN_NAME_LOCAL}`)"
       - "traefik.http.routers.proxy.entrypoints=websecure"
       - "traefik.http.services.proxy.loadbalancer.server.port=8080"
-      - "traefik.http.middlewares.limit.buffering.maxRequestBodyBytes=50000000"  # Sets the maximum request body to 50Mb
-      - "traefik.http.middlewares.limit.buffering.memRequestBodyBytes=100000000"  # 100Mb
-      - "traefik.http.middlewares.limit.buffering.maxResponseBodyBytes=100000000"  # 100Mb
-      - "traefik.http.middlewares.limit.buffering.memResponseBodyBytes=100000000"  # 100Mb
+      - "traefik.http.middlewares.limit.buffering.maxRequestBodyBytes=50000000" # Sets the maximum request body to 50Mb
+      - "traefik.http.middlewares.limit.buffering.memRequestBodyBytes=100000000" # 100Mb
+      - "traefik.http.middlewares.limit.buffering.maxResponseBodyBytes=100000000" # 100Mb
+      - "traefik.http.middlewares.limit.buffering.memResponseBodyBytes=100000000" # 100Mb
     networks:
       john_toolbox_network:
 
-  # ------------------------------------------ JUPYTER NOTEBOOK DEV CONTAINER--------------------------------------------------------
+        # ------------------------------------------ JUPYTER NOTEBOOK DEV CONTAINER--------------------------------------------------------
   john_dev:
     ports:
       - "${NOTEBOOK_PORT}:${NOTEBOOK_PORT}"
@@ -44,6 +44,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_${DEVICE}
+      args:
+        CUDA_TAG_IMAGE: ${CUDA_TAG_IMAGE}
+        POETRY_VERSION: ${POETRY_VERSION}
+        PYTHON_VERSION: ${PYTHON_VERSION}
     runtime: ${DOCKER_RUNTIME}
     command: poetry run jupyter notebook --port=${NOTEBOOK_PORT} --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token=''
     # command: poetry run jupyter lab --port=${NOTEBOOK_PORT} --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token='' --notebook-dir .
@@ -60,14 +64,14 @@ services:
     networks:
       john_toolbox_network:
     labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.john_dev.rule=Host(`nb.${DOMAIN_NAME_LOCAL}`)"
-        - "traefik.http.routers.john_dev.entrypoints=websecure"
-        - "traefik.http.services.john_dev.loadbalancer.server.port=${NOTEBOOK_PORT}"
+      - "traefik.enable=true"
+      - "traefik.http.routers.john_dev.rule=Host(`nb.${DOMAIN_NAME_LOCAL}`)"
+      - "traefik.http.routers.john_dev.entrypoints=websecure"
+      - "traefik.http.services.john_dev.loadbalancer.server.port=${NOTEBOOK_PORT}"
   # ------------------------------------------ DATABASE CONTAINER --------------------------------------------------------
   postgres_john:
     container_name: postgres-john
-    image: postgres:14.4  # https://hub.docker.com/_/postgres
+    image: postgres:14.4 # https://hub.docker.com/_/postgres
     restart: always
     command: -p ${POSTGRES_PORT}
     environment:
@@ -91,8 +95,7 @@ services:
       - "${POSTGRES_PORT}"
       - "5433"
     networks:
-      john_toolbox_network:
-  # ------------------------------------------ PGADMIN CONTAINER --------------------------------------------------------
+      john_toolbox_network: # ------------------------------------------ PGADMIN CONTAINER --------------------------------------------------------
   pgadmin_john:
     container_name: pgadmin-john
     image: dpage/pgadmin4:6.12
@@ -118,5 +121,6 @@ services:
 volumes:
   pgadmin:
 
+
 networks:
-    john_toolbox_network:
+  john_toolbox_network:

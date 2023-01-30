@@ -1,4 +1,12 @@
-FROM nvidia/cuda:11.4.0-cudnn8-runtime-ubuntu20.04@sha256:032726ef96a82a49f4a2f5a48e2035c78aeff7b34213003516c9077cc2c61f47 
+ARG CUDA_TAG_IMAGE
+ARG CUDA_DIGEST
+
+
+
+FROM nvidia/cuda:${CUDA_TAG_IMAGE}
+
+ARG POETRY_VERSION
+ARG PYTHON_VERSION
 
 # https://github.com/docker-library/python
 
@@ -13,42 +21,42 @@ ENV LANG C.UTF-8
 RUN set -eux; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		ca-certificates \
-		netbase \
-		tzdata \
+	ca-certificates \
+	netbase \
+	tzdata \
 	; \
 	rm -rf /var/lib/apt/lists/*
 
 ENV GPG_KEY E3FF2839C048B25C084DEBE9B26995E310250568
-ENV PYTHON_VERSION 3.8.15
+ENV PYTHON_VERSION ${PYTHON_VERSION}
 
 RUN set -eux; \
 	\
 	savedAptMark="$(apt-mark showmanual)"; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
-		dpkg-dev \
-		gcc \
-		gnupg dirmngr \
-		libbluetooth-dev \
-		libbz2-dev \
-		libc6-dev \
-		libexpat1-dev \
-		libffi-dev \
-		libgdbm-dev \
-		liblzma-dev \
-		libncursesw5-dev \
-		libreadline-dev \
-		libsqlite3-dev \
-		libssl-dev \
-		make \
-		nodejs \
-		npm \
-		tk-dev \
-		uuid-dev \
-		wget \
-		xz-utils \
-		zlib1g-dev \
+	dpkg-dev \
+	gcc \
+	gnupg dirmngr \
+	libbluetooth-dev \
+	libbz2-dev \
+	libc6-dev \
+	libexpat1-dev \
+	libffi-dev \
+	libgdbm-dev \
+	liblzma-dev \
+	libncursesw5-dev \
+	libreadline-dev \
+	libsqlite3-dev \
+	libssl-dev \
+	make \
+	nodejs \
+	npm \
+	tk-dev \
+	uuid-dev \
+	wget \
+	xz-utils \
+	zlib1g-dev \
 	; \
 	\
 	wget -O python.tar.xz "https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz"; \
@@ -65,17 +73,17 @@ RUN set -eux; \
 	cd /usr/src/python; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
-		--build="$gnuArch" \
-		--enable-loadable-sqlite-extensions \
-		--enable-optimizations \
-		--enable-option-checking=fatal \
-		--enable-shared \
-		--with-system-expat \
-		--without-ensurepip \
+	--build="$gnuArch" \
+	--enable-loadable-sqlite-extensions \
+	--enable-optimizations \
+	--enable-option-checking=fatal \
+	--enable-shared \
+	--with-system-expat \
+	--without-ensurepip \
 	; \
 	nproc="$(nproc)"; \
 	make -j "$nproc" \
-		LDFLAGS="-Wl,--strip-all" \
+	LDFLAGS="-Wl,--strip-all" \
 	; \
 	make install; \
 	\
@@ -83,11 +91,11 @@ RUN set -eux; \
 	rm -rf /usr/src/python; \
 	\
 	find /usr/local -depth \
-		\( \
-			\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
-			-o \( -type f -a \( -name '*.pyc' -o -name '*.pyo' -o -name 'libpython*.a' \) \) \
-			-o \( -type f -a -name 'wininst-*.exe' \) \
-		\) -exec rm -rf '{}' + \
+	\( \
+	\( -type d -a \( -name test -o -name tests -o -name idle_test \) \) \
+	-o \( -type f -a \( -name '*.pyc' -o -name '*.pyo' -o -name 'libpython*.a' \) \) \
+	-o \( -type f -a -name 'wininst-*.exe' \) \
+	\) -exec rm -rf '{}' + \
 	; \
 	\
 	ldconfig; \
@@ -95,12 +103,12 @@ RUN set -eux; \
 	apt-mark auto '.*' > /dev/null; \
 	apt-mark manual $savedAptMark; \
 	find /usr/local -type f -executable -not \( -name '*tkinter*' \) -exec ldd '{}' ';' \
-		| awk '/=>/ { print $(NF-1) }' \
-		| sort -u \
-		| xargs -r dpkg-query --search \
-		| cut -d: -f1 \
-		| sort -u \
-		| xargs -r apt-mark manual \
+	| awk '/=>/ { print $(NF-1) }' \
+	| sort -u \
+	| xargs -r dpkg-query --search \
+	| cut -d: -f1 \
+	| sort -u \
+	| xargs -r apt-mark manual \
 	; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*; \
@@ -110,10 +118,10 @@ RUN set -eux; \
 # make some useful symlinks that are expected to exist ("/usr/local/bin/python" and friends)
 RUN set -eux; \
 	for src in idle3 pydoc3 python3 python3-config; do \
-		dst="$(echo "$src" | tr -d 3)"; \
-		[ -s "/usr/local/bin/$src" ]; \
-		[ ! -e "/usr/local/bin/$dst" ]; \
-		ln -svT "$src" "/usr/local/bin/$dst"; \
+	dst="$(echo "$src" | tr -d 3)"; \
+	[ -s "/usr/local/bin/$src" ]; \
+	[ ! -e "/usr/local/bin/$dst" ]; \
+	ln -svT "$src" "/usr/local/bin/$dst"; \
 	done
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
@@ -141,11 +149,11 @@ RUN set -eux; \
 	export PYTHONDONTWRITEBYTECODE=1; \
 	\
 	python get-pip.py \
-		--disable-pip-version-check \
-		--no-cache-dir \
-		--no-compile \
-		"pip==$PYTHON_PIP_VERSION" \
-		"setuptools==$PYTHON_SETUPTOOLS_VERSION" \
+	--disable-pip-version-check \
+	--no-cache-dir \
+	--no-compile \
+	"pip==$PYTHON_PIP_VERSION" \
+	"setuptools==$PYTHON_SETUPTOOLS_VERSION" \
 	; \
 	rm -f get-pip.py; \
 	\
@@ -154,7 +162,7 @@ RUN set -eux; \
 RUN apt update && apt install curl make git libopenblas-base -y
 RUN git config --global --add safe.directory '*'
 
-ENV POETRY_VERSION="1.2.2"
+ENV POETRY_VERSION=$POETRY_VERSION
 ENV POETRY_CACHE /work/.cache/poetry
 ENV POETRY_HOME /usr/local/
 ENV POETRY_VIRTUALENVS_PATH=$POETRY_CACHE
