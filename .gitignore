@@ -370,6 +370,7 @@ modules.xml
 
 
 ### vscode ###
+.vscode-server/
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -384,3 +385,4 @@ modules.xml
 
 docker_history/
 ssl
+data
