@@ -159,7 +159,17 @@ RUN set -eux; \
 	\
 	pip --version
 
-RUN apt update && apt install curl make git libopenblas-base -y
+RUN apt update && apt install -y curl \
+	make \
+	git \
+	libopenblas-base \ 
+	libgomp1 \ 
+	cmake \
+	build-essential  \
+	libboost-dev \ 
+	libboost-system-dev \
+	libboost-filesystem-dev;
+
 RUN git config --global --add safe.directory '*'
 
 ENV POETRY_VERSION=$POETRY_VERSION

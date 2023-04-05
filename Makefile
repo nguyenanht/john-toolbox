@@ -163,6 +163,7 @@ env: ## Create .env file
 up-notebook-extension: ## Activate useful notebook extensions
 	$(DKC_RUN) bash -c "poetry run jupyter contrib nbextension install --sys-prefix --symlink"
 	$(DKC_RUN) bash -c "poetry run jupyter nbextension enable autosavetime/main --sys-prefix \
+	&& poetry run jupyter nbextension enable --py widgetsnbextension \
 	&&  poetry run jupyter nbextension enable tree-filter/index --sys-prefix \
 	&&  poetry run jupyter nbextension enable splitcell/splitcell --sys-prefix \
 	&&  poetry run jupyter nbextension enable toc2/main --sys-prefix \

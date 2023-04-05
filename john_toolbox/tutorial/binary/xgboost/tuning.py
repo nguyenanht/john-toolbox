@@ -7,11 +7,12 @@ hyperparameters.
 from https://github.com/optuna/optuna-examples/blob/main/xgboost/xgboost_simple.py
 """
 
+import logging
 import pprint
+
 import optuna
 from optuna.samplers import TPESampler
 from xgboost import XGBClassifier
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -99,7 +100,8 @@ def optimize_hyperparameter(
 ):
     # https://tech.preferred.jp/en/blog/multivariate-tpe-makes-optuna-even-more-powerful/
     study = optuna.create_study(
-        direction="maximize", sampler=TPESampler(multivariate=True, seed=seed)
+        direction="maximize",
+        sampler=TPESampler(multivariate=True, seed=seed),
     )
     study.optimize(
         func=lambda trial: objective_xgb(
