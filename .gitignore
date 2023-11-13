@@ -386,3 +386,6 @@ modules.xml
 docker_history/
 ssl
 data
+.vscode
+.local
+.ipython
