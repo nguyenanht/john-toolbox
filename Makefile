@@ -91,7 +91,7 @@ lab: ## Start the Jupyter lab (must be run from inside the container)
 
 ps: ## see docker running
 	make ascii-logo
-	docker ps
+	$(DKC) $(DKC_CFG) ps
 .PHONY: ps
 
 ascii-logo:
