@@ -1,15 +1,12 @@
+import numpy as np
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder
+
 from john_toolbox.preprocessing.pandas_transformers import (
-    DebugTransformer,
-    DropColumnsTransformer,
     EncoderTransformer,
     FunctionTransformer,
     SelectColumnsTransformer,
 )
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OrdinalEncoder
-
-import numpy as np
 
 
 def astype_to_string(X, column):
