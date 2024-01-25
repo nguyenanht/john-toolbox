@@ -214,10 +214,10 @@ configure-pre-commit: ## install precommit
 
 lint: ## 
 	echo "executing command inside docker..."
+	RUFF_EXIT_CODE=0
 	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC_RUN) poetry run ruff check $(SRC_DIR) || RUFF_EXIT_CODE=$$?
 	echo "apply ruff done."
 	[ $$RUFF_EXIT_CODE -eq 0 ] || exit $$RUFF_EXIT_CODE
-	echo "apply ruff done."
 .PHONY: lint
 
 format-all: ## format all
