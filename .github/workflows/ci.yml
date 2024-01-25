@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
       # 2. cache poetry dependencies
       - name: Cache Poetry dependencies and .cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cache/pypoetry
