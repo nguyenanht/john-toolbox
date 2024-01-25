@@ -20,17 +20,35 @@ RUN apt update \
     && apt-get autoclean \
     && apt-get clean
 
+# Redefine the arguments that need to be retained
+ARG PYTHON_VERSION
+ARG DQ_LIB_VERSION
+ARG POETRY_VERSION
 
-ENV POETRY_VERSION=$POETRY_VERSION
-ENV POETRY_CACHE /work/.cache/poetry
-ENV POETRY_HOME /usr/local/
-ENV POETRY_VIRTUALENVS_PATH=$POETRY_CACHE
-
-RUN curl -sSL https://install.python-poetry.org | python -
-
+# Set environment variables
 ENV SHELL /bin/bash
-ENV PIP_CACHE_DIR /work/.cache/pip
+ENV HOME /work
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV POETRY_VERSION=$POETRY_VERSION
+ENV POETRY_CACHE $HOME/.cache/poetry
+ENV POETRY_HOME /opt/.poetry
+ENV PIP_CACHE_DIR $HOME/.cache/pip
+ENV PATH $POETRY_HOME/bin:$PATH
 ENV JUPYTER_RUNTIME_DIR /work/.cache/jupyter/runtime
-ENV JUPYTER_CONFIG_DIR /work/.cache/jupyter/config
+
+# Install Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+# Set the working directory
+WORKDIR $HOME
+
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install  -y \
+    libgomp1 \
+    python3-tk \
+    g++ \
+    gcc \
+    graphviz \
+    bash-completion;
 
 CMD ["bash", "-l"]

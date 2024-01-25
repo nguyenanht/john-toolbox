@@ -1,7 +1,4 @@
 #!/bin/sh
 
-echo "Launching pre-commit"
-echo ${PWD}
-make black
-echo ""
-make lint
+# pre-commit
+exec $PWD/pre-commit/script-pre-commit.sh

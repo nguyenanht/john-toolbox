@@ -1,0 +1,23 @@
+# Dockerfile
+FROM python:3.9
+
+# Accept UID and GID as build arguments
+ARG UID
+ARG GID
+
+# Check if UID is provided, if not exit with an error message
+RUN if [ -z "$UID" ]; then echo "UID is required!" && exit 1; fi
+
+RUN apt-get update && \
+    apt-get install -y git && \
+    pip install pre-commit
+
+
+
+# Create a non-root user with the same UID and GID as the host user
+RUN groupadd -g $GID myuser && useradd -m -u $UID -g $GID myuser
+
+# Switch to the new user
+USER myuser
+
+RUN git config --global --add safe.directory '*'

@@ -1,10 +1,16 @@
 # set default shell
 SHELL := $(shell which bash)
+GROUP_ID = $(shell id -g)
+USER_ID = $(shell id -u)
 FOLDER=$$(pwd)
 SSL_DIR = ssl
 # default shell options
 .SHELLFLAGS = -c
-.SILENT: ;
+MAKE_BIN=$(MAKE)
+.SILENT: ;			   # no need for @
+.ONESHELL: ;			 # recipes execute in same shell
+.NOTPARALLEL: ;		  # wait for this target to finish
+.EXPORT_ALL_VARIABLES: ; # send all vars to shell
 default: help;   # default target
 
 # TODO : handle image_name for CPU
@@ -28,7 +34,7 @@ help: ## Display help
 
 
 build: ## Build image
-	$(DKC) $(DKC_CFG) build
+	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC) $(DKC_CFG) build
 .PHONY: build
 
 install: ## First time: Build image, and install all the dependencies, including jupyter
@@ -56,11 +62,11 @@ create-history:
 
 start: ## Launch containers john_toolbox
 	make create-history
-	$(DKC) $(DKC_CFG) up -d --remove-orphans
+	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC) $(DKC_CFG) up -d --remove-orphans
 .PHONY: start
 
 stop: ## Stop and delete containers but leave network and volumes
-	$(DKC) $(DKC_CFG) rm -f -v -s
+	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC) $(DKC_CFG) rm -f -v -s
 	echo "stop and deleted containers but leave network and volumes."
 .PHONY: stop
 
@@ -78,7 +84,7 @@ destroy: ## destroy all containers, networks, volumes and orphaned containers
 .PHONY: destroy
 
 deps: ## install dependencies
-	$(DKC_RUN) poetry install --sync
+	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC_RUN) poetry install --sync
 .PHONY: deps
 
 notebook:
@@ -119,12 +125,12 @@ coverage: tests  ## To see tests coverage (Go inside dev container to execute it
 	else \
 		echo "You cannot run coverage outside container."; \
 	fi
-	
+
 .PHONY: coverage
 
 docs: build ## Build and generate docs
-	$(DKC_RUN) poetry run sphinx-build ./docs-scripts/source ./docs -b html
-	$(DKC_RUN) touch ./docs/.nojekyll
+	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC_RUN) poetry run sphinx-build ./docs-scripts/source ./docs -b html
+	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC_RUN) touch ./docs/.nojekyll
 .PHONY: doc
 
 docs-prod: install ## Build and generate docs in production automatically
@@ -134,7 +140,7 @@ docs-prod: install ## Build and generate docs in production automatically
 
 ci-pytest: install ## ci tests
 	make env
-	$(DKC_RUN) make tests
+	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC_RUN) make tests
 .PHONY: ci-pytest
 
 prepare-release: build build-releaser ## Prepare release branch with changelog for given version
@@ -161,8 +167,8 @@ env: ## Create .env file
 .PHONY: env
 
 up-notebook-extension: ## Activate useful notebook extensions
-	$(DKC_RUN) bash -c "poetry run jupyter contrib nbextension install --sys-prefix --symlink"
-	$(DKC_RUN) bash -c "poetry run jupyter nbextension enable autosavetime/main --sys-prefix \
+	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC_RUN) bash -c "poetry run jupyter contrib nbextension install --sys-prefix --symlink"
+	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC_RUN) bash -c "poetry run jupyter nbextension enable autosavetime/main --sys-prefix \
 	&& poetry run jupyter nbextension enable --py widgetsnbextension \
 	&&  poetry run jupyter nbextension enable tree-filter/index --sys-prefix \
 	&&  poetry run jupyter nbextension enable splitcell/splitcell --sys-prefix \
@@ -186,19 +192,39 @@ reset-theme: ## Activate dark mode theme
 	$(DKC_RUN) "poetry run jt -r"
 .PHONY: reset-theme
 
-configure-pre-commit:
-	# temporary fix for ubuntu20.04 Dockerfile_gpu
-	$(DKC_RUN) bash -c "git config --global --add safe.directory /work && poetry run pre-commit install -f"
-	make chown
-	echo "Copy pre-commit configuration to .git/hooks"
-	cp -a pre-commit/* .git/hooks/
+configure-pre-commit: ## install precommit
+	docker build --build-arg UID=$(USER_ID) --build-arg GID=$(GROUP_ID) -t pre-commit-image -f pre-commit/Dockerfile-pre-commit .
+
+	if [ ! -d pre-commit/.cache ]; then
+		mkdir pre-commit/.cache
+	else
+		echo "Directory pre-commit/.cache already exists, skipping creation."
+	fi
+
+	cp pre-commit/pre-commit .git/hooks/pre-commit
+	echo "cp pre-commit/pre-commit .git/hooks/pre-commit"
+
+	chmod +x .git/hooks/pre-commit
+	echo "chmod +x .git/hooks/pre-commit"
+
+	chmod +x pre-commit/script-pre-commit.sh
+	echo "chmod +x pre-commit/script-pre-commit.sh"
 .PHONY: configure-pre-commit
 
-lint: ## flake8
+
+lint: ## 
 	echo "executing command inside docker..."
-	$(DKC_RUN) poetry run flake8 $(SRC_DIR)
-	echo "apply flake8 done."
+	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC_RUN) poetry run ruff check $(SRC_DIR) || RUFF_EXIT_CODE=$$?
+	echo "apply ruff done."
+	[ $$RUFF_EXIT_CODE -eq 0 ] || exit $$RUFF_EXIT_CODE
+	echo "apply ruff done."
 .PHONY: lint
+
+format-all: ## format all
+	echo "executing command inside docker..."
+	$(ENV) USER_ID=$(USER_ID) GROUP_ID=$(GROUP_ID) $(DKC_RUN) poetry run ruff check --fix $(SRC_DIR)
+	echo "apply ruff done."
+.PHONY: format-all
 
 black: ## black
 	echo "executing command inside docker..."
