@@ -1,12 +1,7 @@
+import json
 import logging
-from logging.handlers import TimedRotatingFileHandler
-import pathlib
-import sys
-
 import logging.config
 import os
-import json
-
 
 ACCEPTED_LEVEL_MODE = {
     "INFO": logging.INFO,
@@ -40,13 +35,11 @@ def setup_log_config(is_dev=False, level=None):
 
         if level is not None:
             if level.upper() in ACCEPTED_LEVEL_MODE.keys():
-
                 config["root"]["level"] = level.upper()
                 config["handlers"]["console"]["level"] = level.upper()
         print(f"level logging = {config['root']['level']}")
         logging.config.dictConfig(config)
     else:
-
         if level is not None:
             custom_level = ACCEPTED_LEVEL_MODE.get(level.upper())
             if custom_level is not None:
