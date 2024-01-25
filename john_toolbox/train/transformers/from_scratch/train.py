@@ -49,7 +49,10 @@ def greedy_decode(model, source, source_mask, tokenizer_src, tokenizer_tgt, max_
         prob = model.project(out[:, -1])
         _, next_word = torch.max(prob, dim=1)
         decoder_input = torch.cat(
-            [decoder_input, torch.empty(1, 1).type_as(source).fill_(next_word.item()).to(device)],
+            [
+                decoder_input,
+                torch.empty(1, 1).type_as(source).fill_(next_word.item()).to(device),
+            ],
             dim=1,
         )
 
@@ -97,7 +100,13 @@ def run_validation(
             assert encoder_input.size(0) == 1, "Batch size must be 1 for validation"
 
             model_out = greedy_decode(
-                model, encoder_input, encoder_mask, tokenizer_src, tokenizer_tgt, max_len, device
+                model,
+                encoder_input,
+                encoder_mask,
+                tokenizer_src,
+                tokenizer_tgt,
+                max_len,
+                device,
             )
 
             source_text = batch["src_text"][0]
@@ -110,9 +119,9 @@ def run_validation(
 
             # Print the source, target and model output
             print_msg("-" * console_width)
-            print_msg(f"{f'SOURCE: ':>12}{source_text}")
-            print_msg(f"{f'TARGET: ':>12}{target_text}")
-            print_msg(f"{f'PREDICTED: ':>12}{model_out_text}")
+            print_msg(f"{'SOURCE: ':>12}{source_text}")
+            print_msg(f"{'TARGET: ':>12}{target_text}")
+            print_msg(f"{'PREDICTED: ':>12}{model_out_text}")
 
             if count == num_examples:
                 print_msg("-" * console_width)
