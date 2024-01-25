@@ -389,3 +389,12 @@ data
 .vscode
 .local
 .ipython
+.ssh
+.bash_history
+.config
+.gnupg
+.jupyter
+.npm
+runs/
+.nv
+

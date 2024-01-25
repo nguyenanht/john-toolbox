@@ -40,4 +40,7 @@ else
 fi
 
 echo running $cmd_args in $container container service
+export USER_ID=$(id -u)
+export GROUP_ID=$(id -g)
+
 docker-compose run --rm $opts $container $cmd_args
