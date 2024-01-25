@@ -19,7 +19,7 @@ jobs:
       # 1. get content
 
       - name: "Checkout"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
 
