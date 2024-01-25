@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "john_toolbox"
 version = "0.5.1"
-description = "Wrapper for transformers scikit learn pipeline and wrapper for ml model"
+description = "Toolbox for scikit learn pipeline and wrapper for AI models."
 authors = ["john <nonosnguyen@gmail.com>"]
 # New attributes
 license = "MIT"
