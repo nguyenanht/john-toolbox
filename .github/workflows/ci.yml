@@ -49,5 +49,5 @@ jobs:
           make lint || exit 1
       # 7. run Commit linter
       - name: "Commit linter"
-        uses: wagoid/commitlint-github-action@v4 # https://github.com/wagoid/commitlint-github-action
+        uses: wagoid/commitlint-github-action@v5 # https://github.com/wagoid/commitlint-github-action
 
