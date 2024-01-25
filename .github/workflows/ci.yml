@@ -21,23 +21,33 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      # 2. run pytest
+      # 2. cache poetry dependencies
+      - name: Cache Poetry dependencies and .cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pypoetry
+            .cache
+          key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+      # 3. run pytest
       - name: "Run env"
         run: |
           make env
-      # 2. run pytest
+      # 4. run pytest
       - name: "Run pytest"
         run: |
           make ci-pytest
-      # 3. run generate docs
+      # 5. run generate docs
       - name: "Test generate docs"
         run: |
           make docs
-      # 4. run linter
+      # 6. run linter
       - name: "Linter"
         run: |
           make lint || exit 1
-      # 6. run Commit linter
+      # 7. run Commit linter
       - name: "Commit linter"
         uses: wagoid/commitlint-github-action@v4 # https://github.com/wagoid/commitlint-github-action
 
