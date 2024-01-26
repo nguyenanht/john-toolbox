@@ -150,7 +150,7 @@ indent-width = 4
 
 # Assume Python 3.9
 target-version = "py39"
-cache-dir = "~/.cache/ruff"
+cache-dir = "/work/.cache/ruff"
 
 
 [tool.ruff.lint]
