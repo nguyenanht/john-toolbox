@@ -396,9 +396,11 @@ def train_model(config):
 
 
 if __name__ == "__main__":
+    # config
     from john_toolbox.utils.logger_config import setup_log_config
 
     setup_log_config(is_dev=True, level="INFO")
     warnings.filterwarnings("ignore")
     config = get_config()
+    # launch training model
     train_model(config)
