@@ -15,16 +15,11 @@ include = ["LICENSE"]
 python = ">=3.9,<3.10"
 pandas = "^1.1"
 tqdm = "^4.51"
-Jinja2 = "^2.11.0,<3.0.0"
 MarkupSafe = "2.0.1"
 ipywidgets = "7.6.5"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^3.0"
-jupyterlab = "^3.4.2"
-jupyter = "^1.0.0"
-jupytext = "^1.11.1"
-jupyter-contrib-nbextensions = "^0.5.1"
 sphinx-rtd-theme = "^0.5.1"
 recommonmark = "^0.7.1"
 autopep8 = "^1.5.6"
@@ -53,6 +48,9 @@ torchvision = "^0.16.2"
 torchaudio = "^2.1.2"
 torchtext = "^0.16.2"
 ruff = "^0.1.14"
+notebook = "^7.0.7"
+jupyterlab-code-formatter = "^2.2.1"
+isort = "^5.13.2"
 
 [build-system]
 requires = ["poetry>=0.12"]
@@ -167,6 +165,9 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
+[tool.ruff.lint.isort]
+known-first-party = ["john_toolbox"]
 
 [tool.ruff.format]
 # Like Black, use double quotes for strings.
