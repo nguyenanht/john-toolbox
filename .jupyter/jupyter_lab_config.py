@@ -1,11 +1,9 @@
 import subprocess
-from typing import List
 
 from jupyterlab_code_formatter.formatters import (
     SERVER_FORMATTERS,
     BaseFormatter,
     handle_line_ending_and_magic,
-    logger,
 )
 
 # Configuration file for lab.
@@ -1170,18 +1168,17 @@ class RuffFormatFormatter(BaseFormatter):
         return True
 
     @handle_line_ending_and_magic
-    def format_code(self, code: str, notebook: bool, args: List[str] = [], **options) -> str:
+    def format_code(self, code: str, notebook: bool, args: list[str] = [], **options) -> str:
         process = subprocess.run(
-            [self.ruff_bin, "format", "-", "--config", "pyproject.toml"],
+            ["ruff", "format", "-", "--config", "/work/pyproject.toml"],
             input=code,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            universal_newlines=True,
+            text=True,
         )
 
         if process.stderr:
-            logger.info(process.stderr)
-            return code
+            raise ValueError(process.stderr)
         else:
             return process.stdout
 
