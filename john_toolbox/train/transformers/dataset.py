@@ -82,11 +82,11 @@ class BilingualDataset(Dataset):
         self.seq_len = seq_len
 
         # start of sequence
-        self.sos_token = torch.tensor([tokenizer_tgt.token_to_id("[SOS]")], dtype=torch.int64)
+        self.sos_token_id = torch.tensor([tokenizer_tgt.token_to_id("[SOS]")], dtype=torch.int64)
         # end of sequence
-        self.eos_token = torch.tensor([tokenizer_tgt.token_to_id("[EOS]")], dtype=torch.int64)
+        self.eos_token_id = torch.tensor([tokenizer_tgt.token_to_id("[EOS]")], dtype=torch.int64)
         # padding token, sentances does not contains same number of word, we need to add pad tokens to have the same length
-        self.pad_token = torch.tensor([tokenizer_tgt.token_to_id("[PAD]")], dtype=torch.int64)
+        self.pad_token_id = torch.tensor([tokenizer_tgt.token_to_id("[PAD]")], dtype=torch.int64)
 
     def __len__(self):
         """
@@ -128,62 +128,83 @@ class BilingualDataset(Dataset):
         tgt_text = src_target_pair["translation"][self.tgt_lang]
 
         # Tokenize the source and target sentences
-        enc_input_tokens = self.tokenizer_src.encode(src_text).ids
-        dec_input_tokens = self.tokenizer_tgt.encode(tgt_text).ids
+        enc_input_tokens_ids = self.tokenizer_src.encode(src_text).ids
+        dec_input_tokens_ids = self.tokenizer_tgt.encode(tgt_text).ids
 
         # Calculate the number of padding tokens for the encoder input.
         # The '2' accounts for both the SOS and EOS tokens added to the sequence.
         # This ensures that the total length of the encoder input equals 'seq_len'.
-        enc_num_padding_tokens = self.seq_len - len(enc_input_tokens) - 2
+        enc_num_padding_tokens = self.seq_len - len(enc_input_tokens_ids) - 2
         # Calculate the number of padding tokens for the decoder input.
         # The '1' accounts for the SOS token added to the start of the sequence.
         # The EOS token is not included in the decoder input, as it's used as a part of the output label.
         # This ensures that the total length of the decoder input equals 'seq_len'.
-        dec_num_padding_tokens = self.seq_len - len(dec_input_tokens) - 1
+        dec_num_padding_tokens = self.seq_len - len(dec_input_tokens_ids) - 1
 
         if enc_num_padding_tokens < 0 or dec_num_padding_tokens < 0:
-            LOGGER.error(len(enc_input_tokens))
-            LOGGER.error(len(dec_input_tokens))
+            LOGGER.error(len(enc_input_tokens_ids))
+            LOGGER.error(len(dec_input_tokens_ids))
             LOGGER.error(self.seq_len)
             raise ValueError("Sentence too long.")
 
         # Concatenate SOS, EOS, and padding tokens with the tokenized source sentence
-        encoder_input = torch.cat(
+        encoder_input_ids = torch.cat(
             [
-                self.sos_token,
-                torch.tensor(enc_input_tokens, dtype=torch.int64),
-                self.eos_token,
-                torch.tensor([self.pad_token] * enc_num_padding_tokens, dtype=torch.int64),
+                self.sos_token_id,
+                torch.tensor(enc_input_tokens_ids, dtype=torch.int64),
+                self.eos_token_id,
+                torch.tensor([self.pad_token_id] * enc_num_padding_tokens, dtype=torch.int64),
             ],
             dim=0,
         )
 
         # Concatenate SOS and padding tokens with the tokenized target sentence for decoder input
-        decoder_input = torch.cat(
+        decoder_input_ids = torch.cat(
             [
-                self.sos_token,
-                torch.tensor(dec_input_tokens, dtype=torch.int64),
-                torch.tensor([self.pad_token] * dec_num_padding_tokens, dtype=torch.int64),
+                self.sos_token_id,
+                torch.tensor(dec_input_tokens_ids, dtype=torch.int64),
+                torch.tensor([self.pad_token_id] * dec_num_padding_tokens, dtype=torch.int64),
             ],
             dim=0,
         )
+        # `decoder_input_ids` are the input sequences provided to the decoder.
+        # These sequences are temporally shifted versions of the target sequences
+        # where each token is used to predict the next token in the sequence.
+
+        # Temporal Shift Explanation:
+        # The decoder_input_ids and the labels (targets) are shifted such that each
+        # token in `decoder_input_ids` is aimed at predicting the subsequent token in the labels.
+        # Adding an EOS (End of Sequence) token to `decoder_input_ids` would prematurely signal
+        # to the model that sequence generation is complete, which is counterproductive for training
+        # as the decoder is expected to predict the EOS token naturally, indicating the end of generation.
+
+        # End-of-Sequence Learning:
+        # Excluding the EOS token from `decoder_input_ids` but including it in the labels encourages
+        # the model to autonomously learn to predict the EOS token. This approach trains the model
+        # to recognize the end of a sequence organically, improving its ability to conclude sequence generation
+        # without explicit prompts.
+
+        # Consistency with Inference:
+        # During inference or model testing, generation typically starts with just the SOS (Start of Sequence) token
+        # and proceeds one token at a time until the EOS token is predicted, marking the sequence's end.
+        # Omitting the EOS token from `decoder_input_ids` during training aligns the training behavior
+        # closely with this inference process, fostering consistency across model operation stages.
 
         # Create the label for training by adding EOS and padding tokens to the target tokens
         label = torch.cat(
             [
-                torch.tensor(dec_input_tokens, dtype=torch.int64),
-                self.eos_token,
-                torch.tensor([self.pad_token] * dec_num_padding_tokens, dtype=torch.int64),
+                torch.tensor(dec_input_tokens_ids, dtype=torch.int64),
+                self.eos_token_id,
+                torch.tensor([self.pad_token_id] * dec_num_padding_tokens, dtype=torch.int64),
             ],
             dim=0,
         )
-
         # Ensure all tensors have the same sequence length as defined
-        assert encoder_input.size(0) == self.seq_len
-        assert decoder_input.size(0) == self.seq_len
+        assert encoder_input_ids.size(0) == self.seq_len
+        assert decoder_input_ids.size(0) == self.seq_len
         assert label.size(0) == self.seq_len
 
-        # Create the encoder mask for attention mechanism.
+        # ! Create the encoder mask for attention mechanism.
         # This mask is a binary tensor indicating where the padding tokens are.
         # The mask has '1's where tokens are not padding and '0's where they are padding.
         # This allows the transformer's attention mechanism to ignore padding tokens.
@@ -192,8 +213,9 @@ class BilingualDataset(Dataset):
         # If the encoder input is [SOS, 15, 234, 67, EOS, PAD, PAD, PAD] (assuming 'seq_len' is 8),
         # then the encoder_mask would be [1, 1, 1, 1, 1, 0, 0, 0].
         # This indicates to the model that it should only attend to the first five tokens.
-        encoder_mask = (encoder_input != self.pad_token).unsqueeze(0).unsqueeze(0).int()
-        # Create the decoder mask for the attention mechanism in the transformer.
+        encoder_mask = (encoder_input_ids != self.pad_token_id).unsqueeze(0).unsqueeze(0).int()
+
+        # ! Create the decoder mask for the attention mechanism in the transformer.
         # This mask serves two purposes:
         # 1. It masks out padding tokens (similar to the encoder mask).
         # 2. It prevents the decoder from 'seeing' future tokens in the sequence,
@@ -206,21 +228,23 @@ class BilingualDataset(Dataset):
         # The causal mask for this length would be a lower triangular matrix of size 8x8,
         # allowing each token to attend only to itself and preceding tokens.
         # The final decoder mask is the combination of these two masks.
-        # tensor([[[1, 0, 0, 0, 0, 0, 0, 0],
+        # tensor([[
+        #  [1, 0, 0, 0, 0, 0, 0, 0],
         #  [1, 1, 0, 0, 0, 0, 0, 0],
         #  [1, 1, 1, 0, 0, 0, 0, 0],
         #  [1, 1, 1, 1, 0, 0, 0, 0],
         #  [1, 1, 1, 1, 0, 0, 0, 0],
         #  [1, 1, 1, 1, 0, 0, 0, 0],
         #  [1, 1, 1, 1, 0, 0, 0, 0],
-        #  [1, 1, 1, 1, 0, 0, 0, 0]]], dtype=torch.int32)
-        decoder_mask = (decoder_input != self.pad_token).unsqueeze(0).unsqueeze(
+        #  [1, 1, 1, 1, 0, 0, 0, 0]]
+        # ], dtype=torch.int32)
+        decoder_mask = (decoder_input_ids != self.pad_token_id).unsqueeze(0).unsqueeze(
             0
-        ).int() & causal_mask(size=decoder_input.size(0))
+        ).int() & causal_mask(size=decoder_input_ids.size(0))
 
         return {
-            "encoder_input": encoder_input,  # (seq_len)
-            "decoder_input": decoder_input,  # (seq_len)
+            "encoder_input": encoder_input_ids,  # (seq_len)
+            "decoder_input": decoder_input_ids,  # (seq_len)
             "encoder_mask": encoder_mask,  # (1, 1, seq_len)
             "decoder_mask": decoder_mask,  # (1, seq_len) & (1, seq_len, seq_len)
             "label": label,  # (seq_len)
