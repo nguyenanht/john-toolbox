@@ -55,3 +55,10 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install  -y cuda-cu
     bash-completion
 
 ENV LD_LIBRARY_PATH /usr/local/cuda/lib64:${LD_LIBRARY_PATH}
+
+ARG USER_ID
+ARG GROUP_ID
+
+# Create group and user
+RUN groupadd -f -g ${GROUP_ID} john_dev_group && \
+    useradd -l -u ${USER_ID} -g john_dev_group john_dev_user

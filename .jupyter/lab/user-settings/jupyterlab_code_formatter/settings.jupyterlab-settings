@@ -1,7 +1,7 @@
 {
     "preferences": {
         "default_formatter": {
-            "python": "ruff_format",
+            "python": ["isort", "ruff_format"],
             "R": "formatR",
             "rust": "rustfmt",
             "c++11": "astyle"
