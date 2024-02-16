@@ -123,7 +123,6 @@ if __name__ == "__main__":
         src_seq_len=config["seq_len"],
         tgt_seq_len=config["seq_len"],
         emb_size=config["d_model"],
-        lr=config["lr"],
         device="auto",
         log_dir=f"/work/data/{config['experiment_name']}",
     )
